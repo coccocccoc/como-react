@@ -1,0 +1,153 @@
+/* 쪽지함 전체 영역 */
+.maillist-board-right {
+    flex: 1;
+    background-color: #000000;
+    color: white;
+    min-height: 100vh;
+}
+
+/* 섹션 제목 */
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    
+}
+
+/* 쪽지 목록 리스트 */
+.mail-list {
+    list-style: none;
+    padding-left: 220px;
+    margin: 0;
+}
+
+.mail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+}
+
+.mail-row:hover {
+    background-color: #1a1a1a;
+}
+
+.mail-title {
+    font-weight: bold;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mail-meta {
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* 쪽지 상세 */
+.mail-detail {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.mail-detail h5 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #00f438;
+}
+
+.mail-etc {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mail-content {
+    margin-top: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* 목록으로 돌아가기 버튼 */
+.btn-mail {
+    margin-top: 20px;
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-mail:hover {
+    background-color: #00f438;
+    color: #000;
+}
+
+/* 쪽지쓰기 버튼 */
+.mail-register {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 220px;
+    padding: 8px 16px;
+    background-color: #00f438;
+    color: #000;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.mail-register:hover {
+    background-color: #00c82e;
+}
+
+/* 보낸/받은 탭 전환 */
+.mail-mode-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-left: 220px;
+}
+
+.toggle-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.toggle-btn.active {
+    background-color: #00f438;
+    color: #000;
+}
+
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.page-btn {
+    padding: 6px 12px;
+    border: 1px solid #888;
+    background-color: #222;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.page-btn.active {
+    background-color: #00f438;
+    color: black;
+    font-weight: bold;
+}

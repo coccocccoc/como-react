@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: sans-serif;
+}
+
+.layout {
+    display: flex;
+    height: 230px;
+    /* 프로필에 맞춰서 수정 권장 */
+    background-color: #000;
+}
+
+.sidebar {
+    width: 225px;
+    background-color: #616161;
+    padding: 20px;
+    color: #e2e6ea;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: #00F438;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 카드 스타일 */
+.card-M {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    background-color: #000000;
+    height: 340px;
+}
+
+/* 프로필 이미지 */
+.profile-image-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profile-image {
+    margin: 15px;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
+.upload-input {
+    position: absolute;
+    left: 1px;
+    bottom: 1px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 10;
+    display: none;
+}
+
+/* 카드 본문 */
+.card-body {
+    border: 1px solid #fff;
+    width: 100%;
+    margin: 15px 15px 15px 0px;
+    border-radius: 8px;
+    color: #fff;
+    padding: 20px;
+}
+
+/* 입력 필드 */
+.input-field {
+    padding: 8px;
+    margin: 10px 0;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #000;
+}
+
+/* 기본 버튼 스타일 */
+.edit-btn-m {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 15px 0px 0px 0px !important;
+    background-color: #646464 !important;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+
+.edit-btn:hover {
+    background-color: #00d028 !important;
+}

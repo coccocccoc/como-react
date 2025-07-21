@@ -1,0 +1,39 @@
+.mail-editor-wrapper {
+    background-color: #000;
+    color: #fff;
+    padding-top: 20px;
+}
+
+.mail-editor-group {
+    padding: 5px 20px 0px 210px;
+    margin-bottom: 20px;
+}
+
+.mail-editor-label {
+    font-weight: bold;
+    display: block;
+}
+
+.editor-recipient-input,
+.mail-editor-title-input,
+.mail-custom-quill {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.mail-custom-quill {
+    height: 200px;
+}
+
+.mail-editor-group textarea {
+    resize: vertical;
+}
+
+.send-button {
+    margin-left: 210px;
+    padding: 10px 20px;
+    font-size: 15px;
+}

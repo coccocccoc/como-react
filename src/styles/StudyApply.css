@@ -1,0 +1,119 @@
+.study-apply-page {
+  background-color: #000000;
+  width: 100%;
+  overflow-x: hidden;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.study-apply-wrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* 상단 스터디 정보 박스 */
+.study-apply-info-box {
+  background-color: #2f2f2f;
+  padding: 32px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.study-apply-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.study-apply-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.study-apply-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.study-apply-tag {
+  background-color: #333;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #fff;
+}
+
+.study-apply-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.badge2 {
+  background-color: #00F438;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: black;
+}
+
+.study-apply-period {
+  font-size: 16px;
+  color: white;
+}
+
+/* 소개 제목 */
+.study-apply-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 36px 0 12px;
+}
+
+/* 신청 / 취소 버튼 */
+.recruit-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.recruit-cancel-btn,
+.recruit-submit-btn {
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+/* 취소하기 버튼 */
+.recruit-cancel-btn {
+  background-color: transparent;
+  border: 1px solid #444;
+  color: #ccc;
+}
+
+.recruit-cancel-btn:hover {
+  background-color: #222;
+}
+
+/* 신청하기 버튼 */
+.recruit-submit-btn {
+  background-color: #00F438;
+  border: 3px solid #00F438;
+  color: rgb(0, 0, 0);
+}
+
+.recruit-submit-btn:hover {
+  border: 3px solid #00F438;
+  background-color: #000;
+  color: rgb(255, 255, 255);
+}

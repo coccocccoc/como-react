@@ -1,0 +1,139 @@
+.study-detail-page {
+  background-color: #000000;
+  color: #fff;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.study-detail-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.study-detail-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.study-detail-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 40px;
+}
+
+.study-detail-info-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  background-color: #1a1a1a;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 48px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #f0f0f0;
+}
+
+.study-detail-section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.study-detail-content {
+  background-color: #1e1e1e;
+  padding: 24px;
+  border-radius: 12px;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #ddd;
+}
+
+.study-detail-content ul {
+  margin-left: 20px;
+  list-style: disc;
+}
+
+.study-detail-content p {
+  margin-bottom: 12px;
+}
+
+.study-detail-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.study-detail-apply-btn {
+  background-color: #00F438;
+  border: 3px solid #00F438;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.study-detail-apply-btn:hover {
+  border: 3px solid #00F438;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+}
+
+.study-edit-btn {
+  background-color: #3BA854;
+  border: 1px solid #3BA854;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.study-delete-btn {
+  background-color: transparent;
+  border: 1px solid #666;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.study-edit-btn:hover {
+  background-color: #111;
+  border-color: #3BA854;
+}
+.study-delete-btn:hover {
+  background-color: #111;
+  border-color: #888;
+}
+
+.study-closed-message {
+  font-size: 16px;
+  color: #ff5e5e;
+  font-weight: bold;
+  margin-top: 12px;
+}

@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: sans-serif;
+}
+
+.sidenav-layout {
+    display: flex;
+    height: 230px;
+    /* 프로필에 맞춰서 수정 권장 */
+}
+
+.sidenav-sidebar {
+    width: 225px;
+    background-color: #616161;
+    padding: 20px;
+    color: #e2e6ea;
+    text-decoration: none;
+}
+
+.sidenav-sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidenav-sidebar a:hover {
+    color: #00F438;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* 카드 스타일 */
+.card {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    background-color: #000000;
+}
+
+/* 프로필 이미지 컨테이너 */
+.sidenav-profile-image-container {
+    display: inline-block;
+}
+
+.sidenav-profile-image {
+    margin: 15px 15px 15px 15px;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
+/* 카드 본문 스타일 */
+.sidenav-card-body {
+    border: 1px solid #fff;
+    width: 100%;
+    margin: 15px 15px 15px 0px;
+    border-radius: 8px;
+    color: #fff;
+    padding: 20px;
+}
+
+/* 기본 버튼 스타일 (쪽지 등 다른 버튼에 쓸 경우 대비) */
+/* .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+} */
+
+.edit-btn-s {
+    display: inline-block;   
+    padding: 5px 16px; 
+    margin: 30px 0px 0px 0px;
+    background-color: #646464;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.edit-btn:hover {
+    background-color: #00F438;
+    color: #000000;
+}
+

@@ -1,0 +1,81 @@
+.study-detail-page {
+  background-color: #000000;
+  color: #fff;
+  min-height: 100vh;
+  width: 100%; 
+  overflow-x: hidden;
+}
+
+.studyinfo-study-detail-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  margin-top: 15px;
+  padding: 0px 20px;
+}
+
+.studyinfo-study-detail-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.studyinfo-study-detail-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 40px;
+}
+
+.studyinfo-study-detail-info-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  background-color: #1a1a1a;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 48px;
+}
+
+.studyinfo-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.studyinfo-info-label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.studyinfo-info-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #f0f0f0;
+}
+
+/* 글 작성 버튼 */
+.write-btn {
+  position: absolute;
+  right: 24px;
+  bottom: 15px;
+  padding: 10px 15px;
+  font-size: 15px;
+  border: 1px solid #00F438;
+  background-color: #00F438;
+  color: rgb(0, 0, 0);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-right: 10px;
+}
+
+.write-btn:hover {
+  border: 1px solid #00F438;
+  background-color: #000;
+  color: rgb(255, 255, 255);
+}
+
+.studyinfo-study-detail-wrapper { 
+  position: relative; 
+}

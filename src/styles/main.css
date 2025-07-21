@@ -1,0 +1,57 @@
+.header {
+  background-color: #000;
+  border-bottom: 1px solid #333;
+}
+
+.header-inner {
+  max-width: 1359px;
+  margin: 0 auto;
+  padding: 0px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.header nav a {
+  font-size: 14px;
+  margin-left: 15px;
+  text-decoration: none;
+  color: white;
+}
+
+.main {
+  flex: 1;
+  /* padding: 30px 40px; */
+  max-width: 1359px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.study-section {
+  margin-bottom: 50px;
+}
+
+.study-section p,
+.studysection-section-title {
+  font-size: 22px;
+  margin-bottom: 25px;
+  margin-top: 40px;
+}
+
+.study-list {
+  display: grid;
+  flex-wrap: wrap;
+  gap: 20px; 
+  justify-content: flex-start;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+}

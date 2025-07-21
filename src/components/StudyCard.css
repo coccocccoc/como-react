@@ -1,0 +1,115 @@
+/* 카드 전체 */
+.study-card {
+  width: 293px;
+  height: 340px;
+  background: #000;
+  border: 1px solid #fff;
+  border-radius: 24px;
+  padding: 18px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: sans-serif;
+  color: white;
+}
+
+/* 카드 안 콘텐츠 */
+.card-content {
+  flex: 1;
+  cursor: pointer;
+}
+
+/* 모집중/마감임박 */
+.study-status {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 16px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  background-color: white;
+  color: black;
+}
+
+/* 온라인/오프라인 */
+.badge-online {
+  background-color: #00F438;
+  color: black;
+}
+
+/* 마감일 */
+.study-meta {
+  font-size: 15px;
+  color: #c1c1c1;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-weight: bold;
+  margin: 0;
+}
+
+/* 제목 */
+.study-title {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+/* 태그 */
+.study-tags {
+  font-size: 16px;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+/* 작성자 & 찜 아이콘 */
+.study-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #666;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+/* 작성자 정보 */
+.study-user {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #999;
+}
+
+.study-user-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #999;
+  margin-right: 10px;
+}
+
+/* 찜 버튼 */
+.study-like-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+}
+
+.study-like-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transform: scale(1.15);
+}

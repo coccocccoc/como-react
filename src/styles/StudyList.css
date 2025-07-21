@@ -1,0 +1,204 @@
+.study-list-page {
+  background-color: #000;
+  min-height: 100vh;
+  color: white;
+  width: 100%; 
+  overflow-x: hidden;
+}
+
+.study-list-wrapper {
+  padding: 0;
+  background-color: #000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 배너 */
+.study-banner {
+  width: 100vw;
+  height: 380px;
+  background-color: #2c2c2c;
+  margin: 0;
+  padding: 0;
+}
+
+/* 필터 + 검색창 */
+.study-top-bar {
+  width: 100%;
+  max-width: 1359px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* 필터 */
+.study-filter {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* 필터 버튼 */
+.filter-button {
+  padding: 10px 18px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background-color: white;
+  color: #333;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background-color: #e8e8e8;
+}
+
+.filter-button.active {
+  background-color: transparent;
+  color: #00f438; 
+  border: 2px solid #00f438;
+  font-weight: bold;
+}
+
+/* 클릭 시 태그 버튼 */
+.tech-tag.selected {
+  border: 2px solid #00f438;
+  color: #00f438;
+  background-color: #000;
+  font-weight: bold;
+}
+
+.tech-tag.selected:hover {
+  color: #000;
+}
+
+/* 검색창 */
+.study-search {
+  display: flex;
+  align-items: center;
+  width: 450px;
+  height: 50px;
+  border: 3px solid #00F438;
+  border-radius: 50px;
+  overflow: hidden;
+  margin: 0 26px 0 0;
+}
+
+.study-search input {
+  flex: 1;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  color: white;
+  padding: 0 24px;
+  font-size: 16px;
+  outline: none;
+  
+}
+
+.study-search button {
+  width: 50px;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.study-search button img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) saturate(100%) invert(66%) sepia(85%) saturate(744%) hue-rotate(82deg) brightness(108%) contrast(103%);
+}
+
+/* 기술 스택 드롭다운 */
+.tech-filter-dropdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: -30px 0 30px 0;
+  padding: 16px;
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  border: 1px solid #444;
+  max-width: 1359px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 태그 개별 스타일 */
+.tech-tag {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tech-tag:hover {
+  background-color: #e6e6e6;
+}
+
+/* 카드 리스트 */
+.studylist-study-list {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1359px;
+  width: 100%;
+}
+
+/* 진행 방식 필터 드롭다운 감싸는 위치 */
+.filter-dropdown-wrapper {
+  position: relative;
+}
+
+/* 진행 방식 드롭다운 */
+.method-filter-dropdown {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 140px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 드롭다운 항목 개별 스타일 */
+.method-option {
+  padding: 8px 16px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.method-option:hover {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+
+
+
+
+
