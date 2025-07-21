@@ -39,8 +39,8 @@ const GroupBoard = () => {
   return (
     <div className="group-board">
       <NavBar />
-      <StudyInfo data={studyInfo} onWrite={() => navigate("/group-board/register")} />
-      <GroupBoardSection posts={posts} />
+      <StudyInfo data={studyInfo}/>
+      <GroupBoardSection posts={posts} onWrite={() => navigate("/group-board/register")} />
       <Footer />
     </div>
   );

@@ -4,13 +4,14 @@ import CommentSection from "./CommentSection";
 import "./GroupBoardSection.css";
 import axios from "axios";
 
-const GroupBoardSection = ({ posts }) => {
+const GroupBoardSection = ({ posts, onWrite  }) => {
   const [postData, setPostData] = useState({});
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [mode, setMode] = useState("list"); // list | write | edit
   const [comments, setComments] = useState({}); // {postId: [{id, author, text, date}]}
+  const [editingPost, setEditingPost] = useState(null); // 수정 중인 게시물 백업
 
   useEffect(() => {
     if (!posts) return;
@@ -86,7 +87,7 @@ const GroupBoardSection = ({ posts }) => {
   const handleDelete = async () => {
     if (!selectedPost) return;
 
-    if (window.confirm("정말 삭제하시겠습니까?")) {
+    if (window.confirm("🗑️ 게시물을 삭제하시겠습니까?")) {
       try {
         const postId = selectedPost.groupPostId || selectedPost.id;
 
@@ -129,6 +130,9 @@ const GroupBoardSection = ({ posts }) => {
     <div className="groupBoardSection">
       {/* 왼쪽 카테고리 목록 */}
       <div className="board-left">
+        <button className="write-btn" onClick={onWrite}>
+          글 작성
+        </button>
         <ul>
           {categories.map(cat => (
             <li
@@ -180,7 +184,16 @@ const GroupBoardSection = ({ posts }) => {
               id: selectedPost?.id || selectedPost?.groupPostId,
             }}
             onSubmit={mode === "write" ? createPost : updatePost}
-            onCancel={() => setMode("list")}
+            onCancel={() => {
+              if (editingPost) {
+                setSelectedPost(editingPost);
+                setMode("list");
+                setEditingPost(null);
+                
+              } else {
+                setMode("list"); 
+              }
+            }}
           />
         )}
 
@@ -198,6 +211,7 @@ const GroupBoardSection = ({ posts }) => {
               목록으로
             </button>
             <button className="edit-btn" onClick={() => {
+              setEditingPost(selectedPost);
               setSelectedCategory(selectedPost.category);
               setMode("edit");
             }}>

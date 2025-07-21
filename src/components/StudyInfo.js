@@ -44,11 +44,6 @@ const StudyInfo = ({ data, onWrite }) => {
         </div>
       </div>
       
-      {onWrite && (
-        <button className="write-btn" onClick={onWrite}>
-          글 작성
-        </button>
-      )}
     </div>
   );
 };

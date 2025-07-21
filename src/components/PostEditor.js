@@ -13,21 +13,21 @@ const PostEditor = ({ categories = [], initData = null, onSubmit, onCancel: pare
     setContent(initData?.content || "");
   }, [initData]);
 
-  const navigate = useNavigate();
   const handleCancel = () => {
-  if (window.history.length > 1) {
-    navigate(-1); // 스택에 이전 페이지가 있으면 뒤로가기
-  } else {
-    navigate("/group-board"); // 없으면 목록(또는 홈)으로
-  }
-};
+    const confirmed = window.confirm("⚠️ 수정을 취소하시겠습니까? \n 작성 중인 모든 내용이 사라집니다.");
+    if (!confirmed) return;
+
+    if (typeof parentCancel === "function") parentCancel();
+  };
 
   const handleSubmit = () => {
     if (!category || !title.trim() || !content.trim()) {
       alert("모든 항목을 입력해 주세요.");
       return;
     }
-
+    const confirmed = window.confirm("📌 수정한 내용을 저장할까요?");
+    if (!confirmed) return;
+    
     onSubmit({ ...initData, id: initData?.id, category, title, content });
   };
   
