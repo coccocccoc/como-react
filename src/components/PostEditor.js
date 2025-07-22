@@ -25,7 +25,7 @@ const PostEditor = ({ categories = [], initData = null, onSubmit, onCancel: pare
       alert("모든 항목을 입력해 주세요.");
       return;
     }
-    const confirmed = window.confirm("📌 수정한 내용을 저장할까요?");
+    const confirmed = window.confirm("📌 작성한 내용을 저장할까요?");
     if (!confirmed) return;
     
     onSubmit({ ...initData, id: initData?.id, category, title, content });

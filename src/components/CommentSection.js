@@ -17,14 +17,12 @@ const CommentSection = ({
       return;
     }
     const newComment = {
-      id: Date.now(),
-      text,
-      author: currentUser.name,
-      date: new Date().toLocaleString(),
-    };
-    onAdd(newComment);
-    setText("");
+    content: text,
   };
+
+  onAdd(newComment);
+  setText("");
+};
 
   return (
     <div className="comment-section">
@@ -33,7 +31,7 @@ const CommentSection = ({
       {/* 댓글 리스트 */}
       {comments.map((c) => (
         <CommentItem
-          key={c.id}
+          key={c.commentId}
           comment={c}
           onDelete={onDelete}
           onEdit={(updated) => onUpdate(updated)}

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CommentItem = ({ comment, onDelete, onEdit }) => {
   const [editing, setEditing] = useState(false);
-  const [txt, setTxt] = useState(comment.text);
+  const [txt, setTxt] = useState(comment.content);
 
   const handleSave = () => {
     if (!txt.trim()) return;
-    onEdit({ ...comment, text: txt, date: new Date().toLocaleString() });
+    onEdit({ ...comment, content: txt, regDate: new Date().toLocaleString() });
     setEditing(false);
   };
   
   return (
     <div className="comment-item">
-      <strong>{comment.author}</strong> | <span>{comment.date}</span>
+      <strong>{comment.nickname}</strong> | <span>{comment.regDate}</span>
       {editing ? (
         <>
           <input value={txt} onChange={(e) => setTxt(e.target.value)} />
@@ -21,9 +21,16 @@ const CommentItem = ({ comment, onDelete, onEdit }) => {
         </>
       ) : (
         <>
-          <p>{comment.text}</p>
+          <p>{comment.content}</p>
           <button className="link-btn" onClick={() => setEditing(true)}>수정</button>
-          <button className="link-btn" onClick={() => onDelete(comment.id)}>삭제</button>
+            <button
+              className="link-btn"
+              onClick={() => {
+                console.log("삭제 요청 ID:", comment.commentId);
+                onDelete(comment.commentId);
+              }}
+            >삭제
+            </button>
         </>
       )}
     </div>
