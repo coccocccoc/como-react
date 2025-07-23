@@ -14,7 +14,7 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
   const [editingPost, setEditingPost] = useState(null); // 수정 중인 게시물 백업
   const [pendingMembers, setPendingMembers] = useState([]); 
   const [selectedMember, setSelectedMember] = useState(null);
-  const [applicationContent, setApplicationContent] = useState("")
+  const [applicationContent, setApplicationContent] = useState({ title: "", content: "" });
 
   //  시스템 카테고리 분리
   const systemCategories = ["회원 승인"];
@@ -25,6 +25,7 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
 
 
   // 임시데이터
+  // 백 연동시 삭제
   useEffect(() => {
     if (mode === "approve") {
       setPendingMembers([
@@ -37,15 +38,22 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
 
   useEffect(() => {
     if (selectedMember) {
-      // 선택한 회원에 따라 임시 신청 글 지정
       const dummyApplications = {
-        101: "안녕하세요! 열심히 활동하겠습니다.",
-        102: "책 모임에 참여하고 싶습니다!",
-        103: "꼭 승인 부탁드립니다 :)",
+        101: { title: "가입 인사", content: "안녕하세요! 열심히 활동하겠습니다." },
+        102: { title: "참여 요청", content: "책 모임에 꼭 참여하고 싶어요!" },
+        103: { title: "가입 부탁드립니다", content: "함께 책 이야기 나누고 싶습니다!" },
       };
-      setApplicationContent(dummyApplications[selectedMember.id] || "신청 글이 없습니다.");
+
+      // 해당 회원의 신청 데이터가 없을 경우 기본값
+      setApplicationContent(
+        dummyApplications[selectedMember.id] || {
+          title: "제목 없음",
+          content: "신청 글이 없습니다."
+        }
+      );
     }
   }, [selectedMember]);
+
 
 
 
@@ -97,19 +105,7 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
   //   }
   // }, [selectedMember]);
 
-  // 임시데이터 사용
-  useEffect(() => {
-  if (selectedMember) {
-    // ✅ 임시 신청 글 데이터
-    const dummyApplications = {
-      101: "안녕하세요! 열심히 활동하겠습니다.",
-      102: "책 모임에 꼭 참여하고 싶어요!",
-      103: "함께 책 이야기 나누고 싶습니다!",
-    };
 
-    setApplicationContent(dummyApplications[selectedMember.id] || "신청 글이 없습니다.");
-  }
-}, [selectedMember]);
 
   // 백 연동시 주석 해제
   // const handleMemberApproval = (memberId, isAccepted) => {
@@ -125,6 +121,7 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
   // };
 
   // 임시데이터 사용
+  // 백 연동시 삭제
   const handleMemberApproval = (memberId, isAccepted) => {
     // ✅ 콘솔에 로그만 찍고 리스트에서 제거
     console.log(`${memberId}번 회원 ${isAccepted ? "수락" : "거절"}됨`);
@@ -327,8 +324,9 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
                 <li key={member.id} className="approval-item">
                   <div className="left">
                     <span onClick={() => setSelectedMember(member)} className="member-name">
-                      {member.name} |
+                      {member.name}
                     </span>
+                    |
                     <span className="member-date"> {member.date}</span>
                   </div>
                   <div className="right">
@@ -343,8 +341,13 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
               <div className="application-popup">
                 <div className="popup-content">
                   <button className="close-btn" onClick={() => setSelectedMember(null)}>X</button>
-                  <h4>{selectedMember.name}님의 신청 글</h4>
-                  <p>{applicationContent}</p>
+                  <h4>{selectedMember.name}님의 가입 신청</h4>
+
+                  <div className="application-details">
+                    <p className="application-title">{applicationContent.title}</p>
+                    <p className="application-body">{applicationContent.content}</p>
+                  </div>
+
                   <div className="approval-buttons">
                     <button onClick={() => handleMemberApproval(selectedMember.id, true)}>수락</button>
                     <button onClick={() => handleMemberApproval(selectedMember.id, false)}>거절</button>

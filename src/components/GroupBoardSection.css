@@ -67,6 +67,7 @@
   padding: 10px 7px;
   border-bottom: 1px solid #333;
   color: #dddddd;
+  height: 45px;
 }
 
 /* 글 작성 버튼 */
@@ -372,6 +373,10 @@
   color: #ddd;
 }
 
+.approval-item:hover{
+  background-color: #1a1a1a;
+}
+
 .approval-item .left {
   display: flex;
   align-items: center;
@@ -381,12 +386,8 @@
 
 .member-name {
   cursor: pointer;
-  font-weight: 500;
-  color: #00F438;
-}
-
-.member-name:hover {
-  text-decoration: underline;
+  font-size: 16px;
+  color: #fff;
 }
 
 .member-date {
@@ -396,7 +397,7 @@
 
 .approval-item .right button {
   margin-left: 8px;
-  padding: 6px 12px;
+  padding: 3px 9px;
   font-size: 13px;
   border-radius: 4px;
   cursor: pointer;
@@ -405,13 +406,14 @@
 }
 
 .approval-item .right button:first-child {
-  background-color: #3BA854;
-  color: #fff;
-  border: 1px solid #175A26;
+  background-color: transparent;
+  color: #42c360;
+  border: 1px solid #298d3f;
 }
 
 .approval-item .right button:first-child:hover {
-  background-color: #175A26;
+  background-color: #172b1b;
+  color: white;
 }
 
 .approval-item .right button:last-child {
@@ -449,15 +451,15 @@
 .popup-content h4 {
   font-size: 18px;
   margin-bottom: 14px;
-  color: #00F438;
+  color: #dddddd;
   border-bottom: 1px solid #444;
   padding-bottom: 8px;
 }
 
 .popup-content p {
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  /* font-size: 15px; */
+  /* line-height: 1.6; */
+  /* margin-bottom: 10px; */
   color: #dddddd;
 }
 
@@ -493,13 +495,14 @@
 }
 
 .approval-buttons button:first-child {
-  background-color: #3BA854;
-  color: #fff;
-  border: 1px solid #175A26;
+  background-color: transparent;
+  color: #42c360;
+  border: 1px solid #298d3f;
 }
 
 .approval-buttons button:first-child:hover {
-  background-color: #175A26;
+  background-color: #172b1b;
+  color: white;
 }
 
 .approval-buttons button:last-child {
@@ -511,4 +514,23 @@
 .approval-buttons button:last-child:hover {
   background-color: #331a1a;
   color: white;
+}
+
+/* .application-details {
+  margin-top: 16px;
+  margin-bottom: 20px;
+} */
+
+.application-title {
+  display: block;
+  font-size: 17px;
+  color: #dddddd;
+  margin-bottom: 15px;
+}
+
+.application-body {
+  font-size: 16px;
+  color: #dddddd;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
