@@ -17,23 +17,24 @@ const CommentSection = ({
       return;
     }
     const newComment = {
-      id: Date.now(),
-      text,
-      author: currentUser.name,
-      date: new Date().toLocaleString(),
-    };
-    onAdd(newComment);
-    setText("");
+    content: text,
   };
+
+  onAdd(newComment);
+  setText("");
+  };
+  
+   // 최신 댓글이 아래로 가도록 정렬
+  const sortedComments = [...comments].sort((a, b) => new Date(a.regDate) - new Date(b.regDate));
 
   return (
     <div className="comment-section">
       <h6>댓글</h6>
 
       {/* 댓글 리스트 */}
-      {comments.map((c) => (
+      {sortedComments.map((c) => (
         <CommentItem
-          key={c.id}
+          key={c.commentId}
           comment={c}
           onDelete={onDelete}
           onEdit={(updated) => onUpdate(updated)}

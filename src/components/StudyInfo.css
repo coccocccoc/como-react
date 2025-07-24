@@ -54,27 +54,6 @@
   color: #f0f0f0;
 }
 
-/* 글 작성 버튼 */
-.write-btn {
-  position: absolute;
-  right: 24px;
-  bottom: 15px;
-  padding: 10px 15px;
-  font-size: 15px;
-  border: 1px solid #00F438;
-  background-color: #00F438;
-  color: rgb(0, 0, 0);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-right: 10px;
-}
-
-.write-btn:hover {
-  border: 1px solid #00F438;
-  background-color: #000;
-  color: rgb(255, 255, 255);
-}
 
 .studyinfo-study-detail-wrapper { 
   position: relative; 
