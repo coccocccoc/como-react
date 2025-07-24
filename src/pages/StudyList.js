@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { mockStudies } from '../data/mockData1';
 import StudyCard from '../components/StudyCard';
 import Navbar from '../components/Navbar';
 import '../styles/StudyList.css';
 import SearchIcon from '../img/Group 1418.svg';
 import Footer from '../components/Footer';
+import axios from 'axios';
 
 function StudyList() {
   const [showTechFilter, setShowTechFilter] = useState(false);
@@ -15,25 +14,18 @@ function StudyList() {
   const [selectedMethod, setSelectedMethod] = useState('전체');
   const [studyList, setStudyList] = useState([]);
 
-  const location = useLocation();
-  const newStudy = location.state;
+  const techTags = [
+    'javascript', 'typescript', 'react', 'vue', 'nodejs', 'spring', 'java', 'nextjs',
+    'nestjs', 'express', 'go', 'c', 'python', 'django', 'swift', 'jest', 'kotlin',
+    'mysql', 'mongodb', 'php', 'graphql', 'firebase', 'reactnative', 'unity',
+    'flutter', 'aws', 'kubernetes', 'docker', 'git', 'figma', 'zeplin', 'svelte'
+  ];
 
   useEffect(() => {
-    setStudyList(mockStudies);
+    axios.get('http://localhost:8080/api/studies')
+      .then(res => setStudyList(res.data))
+      .catch(err => console.error('스터디 목록 불러오기 실패:', err));
   }, []);
-
-  // 새로 등록된 스터디 추가
-  useEffect(() => {
-    if (newStudy) {
-      setStudyList((prev) => {
-        const isDuplicate = prev.some((study) => JSON.stringify(study) === JSON.stringify(newStudy));
-        if (!isDuplicate) {
-          return [newStudy, ...prev];
-        }
-        return prev;
-      });
-    }
-  }, [newStudy]);
 
   const toggleTechFilter = () => {
     setShowTechFilter((prev) => {
@@ -64,27 +56,27 @@ function StudyList() {
     setShowMethodFilter(false);
   };
 
-  const techTags = [
-    'javascript', 'typescript', 'react', 'vue', 'nodejs', 'spring', 'java', 'nextjs',
-    'nestjs', 'express', 'go', 'c', 'python', 'django', 'swift', 'jest', 'kotlin',
-    'mysql', 'mongodb', 'php', 'graphql', 'firebase', 'reactnative', 'unity',
-    'flutter', 'aws', 'kubernetes', 'docker', 'git', 'figma', 'zeplin', 'svelte'
-  ];
+  const sortedStudies = [...studyList].sort((a, b) => {
+    const today = new Date();
+    const aDue = new Date(a.dueDate);
+    const bDue = new Date(b.dueDate);
+    const aIsClosed = aDue < today;
+    const bIsClosed = bDue < today;
 
-  const filteredStudies = studyList
-    .filter((study) =>
+    if (aIsClosed && !bIsClosed) return 1;
+    if (!aIsClosed && bIsClosed) return -1;
+    return 0;
+  });
+
+  const filteredStudies = sortedStudies
+    .filter(study =>
       selectedTags.length === 0 ||
-      selectedTags.every((tag) =>
-        (study.tags || study.techStacks || [])
-          .map((t) => t.toLowerCase())
-          .includes(tag.toLowerCase())
+      selectedTags.every(tag =>
+        (study.tags || []).map(t => t.toLowerCase()).includes(tag.toLowerCase())
       )
     )
-    .filter((study) => study.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter((study) => {
-      if (selectedMethod === '전체') return true;
-      return study.status === selectedMethod;
-    });
+    .filter(study => study.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(study => selectedMethod === '전체' || study.method === selectedMethod);
 
   return (
     <div className="study-list-page">

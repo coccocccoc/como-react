@@ -113,3 +113,8 @@
   object-fit: contain;
   transform: scale(1.15);
 }
+
+.badge-recruiting.closed {
+  background-color: #175E27;
+  color: rgb(0, 0, 0);
+}

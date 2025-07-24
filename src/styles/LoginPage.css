@@ -1,0 +1,75 @@
+.login-container {
+  background-color: #000;
+  color: #fff;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-center {
+  text-align: center;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-subtitle {
+  font-size: 18px;
+  color: #aaa;
+  margin-bottom: 50px;
+}
+
+.login-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
+.login-btn {
+  width: 400px;
+  height: 72px;
+  border: none;
+  border-radius: 999px;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  letter-spacing: -0.3px;
+}
+
+.login-btn:hover {
+  transform: scale(1.03);
+}
+
+/* .login-btn .circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: white;
+  margin-right: 14px;
+} */
+
+.login-btn.kakao {
+  background-color: #fee500;
+  color: #000;
+}
+
+.login-btn.google {
+  background-color: #ffffff;
+  color: #000;
+  border: 1px solid #ddd;
+}
+
+.login-btn.naver {
+  background-color: #03c75a;
+  color: #fff;
+}

@@ -47,19 +47,13 @@ function StudyEdit() {
       <div className="studyedit-recruit-wrapper">
         <h2 className="studyedit-recruit-section-title">스터디 정보 수정</h2>
 
+        {/* 모집 인원 + 예상 기간 */}
         <div className="studyedit-recruit-row">
           <div className="studyedit-recruit-column">
             <label className="studyedit-recruit-label">모집 인원</label>
             <input
               className="studyedit-recruit-people-select"
               value={study.people}
-              disabled
-            />
-
-            <label className="studyedit-recruit-label">진행 방식</label>
-            <input
-              className="studyedit-recruit-method-select"
-              value={study.method}
               disabled
             />
           </div>
@@ -79,7 +73,21 @@ function StudyEdit() {
                 disabled
               />
             </div>
+          </div>
+        </div>
 
+        {/* 진행 방식 + 모집 마감일 */}
+        <div className="studyedit-recruit-row">
+          <div className="studyedit-recruit-column">
+            <label className="studyedit-recruit-label">진행 방식</label>
+            <input
+              className="studyedit-recruit-method-select"
+              value={study.method}
+              disabled
+            />
+          </div>
+
+          <div className="studyedit-recruit-column">
             <label className="studyedit-recruit-label">모집 마감일</label>
             <input
               className="studyedit-recruit-date-input"
@@ -89,6 +97,7 @@ function StudyEdit() {
           </div>
         </div>
 
+        {/* 기술 스택 */}
         <div className="studyedit-recruit-tech-block">
           <label className="studyedit-recruit-label">기술 스택</label>
           <div className="studyedit-recruit-tech-selected">
@@ -110,7 +119,7 @@ function StudyEdit() {
           />
         </div>
 
-        {/* 작성자 확인 없이 항상 버튼 보이게 */}
+        {/* 버튼 영역 */}
         <div className="studyedit-recruit-btns">
           <button className="studyedit-recruit-cancel-btn" onClick={handleCancel}>취소하기</button>
           <button className="studyedit-recruit-submit-btn" onClick={handleSubmit}>수정하기</button>

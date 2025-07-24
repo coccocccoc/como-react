@@ -31,7 +31,11 @@ function StudyDetail() {
   const approvedCount = (studyData.approved || []).length;
   const applicants = studyData.applicants || [];
   const maxPeople = Number(studyData.people || 0);
-  const closed = studyData.status === '마감';
+  
+  const today = new Date();
+  const dueDate = new Date(studyData.dueDate);
+  const closed = dueDate < today || studyData.status === '마감';
+  
 
   const handleApplyClick = () => {
     navigate(`/studies/apply/${studyData.id}`, { state: studyData });

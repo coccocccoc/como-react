@@ -26,6 +26,12 @@ function StudyCard({ study }) {
     return dueDate < today;
   };
 
+  const getStatusLabel = (dueDateStr, status) => {
+    if (status === '마감' || isClosed(dueDateStr)) return '마감';
+    if (isDeadlineNear(dueDateStr)) return '마감 임박';
+    return '모집중';
+  };
+
   const toggleLike = (e) => {
     e.stopPropagation();
     setIsLiked(!isLiked);
@@ -45,24 +51,23 @@ function StudyCard({ study }) {
     navigate('/studies/detail', { state: fullStudyData });
   };
 
+  const isStudyClosed = isClosed(study.dueDate) || study.status === '마감';
+
   return (
     <div className="study-card" onClick={handleCardClick}>
       <div className="card-content">
         <div className="study-status">
-          {/* 초록색: 진행 방식 */}
-          <span className="badge badge-online">
-            {study.method || '진행 방식 미정'}
-          </span>
+          {/* 진행 방식 뱃지는 마감일이 지난 경우 숨김 */}
+          {!isStudyClosed && (
+            <span className="badge badge-online">
+              {study.method || '진행 방식 미정'}
+            </span>
+          )}
 
-          {/* 흰색: 모집 상태 */}
-          <span className="badge badge-recruiting">
-            {study.status === '마감'
-              ? '마감'
-              : isClosed(study.dueDate)
-              ? '마감'
-              : isDeadlineNear(study.dueDate)
-              ? '마감 임박'
-              : '모집중'}
+          {/* 상태 뱃지 */}
+          <span
+            className={`badge badge-recruiting ${isStudyClosed ? 'closed' : ''}`}>
+            {getStatusLabel(study.dueDate, study.status)}
           </span>
         </div>
 

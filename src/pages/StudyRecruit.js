@@ -4,6 +4,7 @@ import Editor from '../components/Editor';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function StudyRecruit() {
   const navigate = useNavigate();
@@ -34,28 +35,34 @@ function StudyRecruit() {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!title || !content || !startDate || !endDate || (!dueDate && !isAlwaysOpen) || !method || !selectedPeople) {
+      alert('모든 항목을 입력해주세요.');
+      return;
+    }
+
     const studyData = {
-      id: Date.now(),
-      title: title || '제목 없음',
+      title,
       nickname: localStorage.getItem('nickname') || '익명',
       dueDate: isAlwaysOpen ? '상시 모집' : dueDate,
-      people: Number(selectedPeople === 'custom' ? customPeople : selectedPeople),
-      currentPeople: 0,
-      period: {
-        start: startDate,
-        end: endDate
-      },
       method,
-      status: method,
-      techStacks: selectedTags,
       tags: selectedTags,
-      content: content || '<p>내용 없음</p>',
+      content,
       date: new Date().toISOString().slice(0, 10),
+      people: Number(selectedPeople === 'custom' ? customPeople : selectedPeople),
+      periodStart: startDate,
+      periodEnd: endDate
     };
 
-    alert('스터디가 성공적으로 등록되었습니다!');
-    navigate('/studies', { state: studyData });
+    try {
+      const response = await axios.post('http://localhost:8080/api/studies', studyData);
+      console.log('등록 성공:', response.data);
+      alert('스터디가 등록되었습니다!');
+      navigate('/studies');
+    } catch (error) {
+      console.error('등록 실패:', error);
+      alert('등록에 실패했습니다.');
+    }
   };
 
   const handleCancel = () => {

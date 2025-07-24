@@ -16,6 +16,10 @@ import MypageList from './pages/MypageList';
 import MypageOff from './pages/MypageOff';
 import MypageOn from './pages/MypageOn';
 import ProfileModification from './pages/ProfileModification';
+import LoginPage from "./pages/LoginPage";
+import KakaoCallback from './pages/KakaoCallback';
+import NaverCallback from './pages/NaverCallback';
+
 
 function App() {
   return (
@@ -37,6 +41,9 @@ function App() {
         <Route path="/mail" element={<MailHome />} />
         <Route path="/mailsend" element={<MailSend />} />
         <Route path="/modification" element={<ProfileModification/>} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/oauth/kakao/callback" element={<KakaoCallback />} />
+        <Route path="/oauth/naver/callback" element={<NaverCallback />} />
       </Routes>
     </Router>
   );
