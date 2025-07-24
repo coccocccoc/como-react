@@ -7,11 +7,10 @@
 }
 
 /* 섹션 제목 */
-.section-title {
+.section-title-m {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
-    
+    margin: 10px 0px 20px 220px;
 }
 
 /* 쪽지 목록 리스트 */
@@ -53,6 +52,7 @@
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #444;
+    margin-left: 220px;
 }
 
 .mail-detail h5 {

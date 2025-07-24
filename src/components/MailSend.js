@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "./MailSend.css";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const MailSend = () => {
     const [title, setTitle] = useState('');
@@ -8,33 +9,32 @@ const MailSend = () => {
     const [recipient, setRecipient] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    // 임시로 senderId 고정 (나중에 로그인 연동 시 수정)
+    const senderId = 1;
+
+    const handleSubmit = async () => {
         if (!title || !content || !recipient) {
             alert("모든 항목을 입력해주세요.");
             return;
         }
 
-        const newMail = {
-            id: Date.now(),
-            title,
-            content,
-            writer: "나", // 현재 사용자 (임시)
-            receiver: recipient,
-            date: new Date().toLocaleDateString(),
-        };
+        const messageDTO = {
+            senderId: senderId,
+            receiverId: parseInt(recipient),
+            title: title,             
+            content: content          
+        }
 
-        // 기존 메일 불러오기
-        const existingMails = JSON.parse(localStorage.getItem("mails")) || [];
-
-        // 새 메일 추가
-        const updatedMails = [...existingMails, newMail];
-
-        // 저장
-        localStorage.setItem("mails", JSON.stringify(updatedMails));
-
-        alert("메일이 전송되었습니다!");
-        navigate('/mail');
+        try {
+            await axios.post("http://localhost:8080/api/messages/send", messageDTO);
+            alert("쪽지가 전송되었습니다!");
+            navigate('/mail');
+        } catch (error) {
+            console.error("쪽지 전송 실패:", error);
+            alert("전송 실패: " + error.message);
+        }
     };
+
 
     return (
         <div className="mail-editor-wrapper">
@@ -50,10 +50,10 @@ const MailSend = () => {
             </div>
 
             <div className="mail-editor-group">
-                <label className="mail-editor-label">받는 사람</label>
+                <label className="mail-editor-label">받는 사람 (ID)</label>
                 <input
                     type="text"
-                    placeholder="받는 사람"
+                    placeholder="받는 사람 ID"
                     value={recipient}
                     onChange={(e) => setRecipient(e.target.value)}
                     className="editor-recipient-input"
@@ -73,5 +73,6 @@ const MailSend = () => {
         </div>
     );
 };
+
 
 export default MailSend;
