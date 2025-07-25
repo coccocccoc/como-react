@@ -12,25 +12,47 @@ function StudyCard({ study }) {
     return text.length > maxLen ? text.slice(0, maxLen) + "..." : text;
   };
 
-  const isDeadlineNear = (dueDateStr) => {
-    const today = new Date();
-    const dueDate = new Date(dueDateStr);
-    const diff = dueDate - today;
-    const daysLeft = diff / (1000 * 60 * 60 * 24);
-    return daysLeft <= 14 && dueDate >= today;
-  };
-
   const isClosed = (dueDateStr) => {
     const today = new Date();
     const dueDate = new Date(dueDateStr);
     return dueDate < today;
   };
 
-  const getStatusLabel = (dueDateStr, status) => {
-    if (status === '마감' || isClosed(dueDateStr)) return '마감';
-    if (isDeadlineNear(dueDateStr)) return '마감 임박';
+
+  // const isDeadlineNear = (dueDateStr) => {
+  //   const today = new Date();
+  //   const dueDate = new Date(dueDateStr);
+  //   const diff = dueDate - today;
+  //   const daysLeft = diff / (1000 * 60 * 60 * 24);
+  //   return daysLeft <= 14 && dueDate >= today;
+  // };
+
+  // const getStatusLabel = (dueDateStr, status) => {
+  //   if (status === '마감' || isClosed(dueDateStr)) return '마감';
+  //   if (isDeadlineNear(dueDateStr)) return '마감 임박';
+  //   return '모집중';
+  // };
+
+  const getStatusLabel = (dueDateStr) => {
+    if (!dueDateStr) return '모집중'; // deadline의 값이 null(상시모집)이어도 "모집중"
+    
+    const today = new Date();
+    const dueDate = new Date(dueDateStr);
+
+    // 시/분/초 제거 (날짜만 비교)
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+
+    const diff = dueDateOnly - todayOnly;
+    const daysLeft = diff / (1000 * 60 * 60 * 24);
+
+    if (daysLeft < 0) return '마감';
+    if (daysLeft <= 14) return '마감 임박';
     return '모집중';
   };
+
+
+
 
   const toggleLike = (e) => {
     e.stopPropagation();
@@ -40,18 +62,27 @@ function StudyCard({ study }) {
   const handleCardClick = () => {
     const fullStudyData = {
       ...study,
-      date: study.date || '2025.07.10',
-      people: study.people || '1명 이상',
-      period: study.period || { start: '2025.07.10', end: '2025.07.31' },
-      techStacks: study.techStacks || study.tags || [],
+      title: study.title,
+      deadline: study.deadline,
+      techStacks: study.techStackNames || [],
+      nickname: study.nickname || '익명',
       content: study.content || '<p>상세 설명 없음</p>',
-      method: study.method || '온/오프라인',
+      people: `${study.capacity}명`,
+      period: {
+        start: study.startDate,
+        end: study.endDate,
+      },
+      method: study.mode,
+      date: study.regDate?.slice(0, 10),
     };
-
     navigate('/studies/detail', { state: fullStudyData });
   };
 
-  const isStudyClosed = isClosed(study.dueDate) || study.status === '마감';
+  const isStudyClosed = study.deadline
+    ? new Date(study.deadline) < new Date()
+    : false;
+  
+  const displayMode = study.mode || '진행 방식 미정';
 
   return (
     <div className="study-card" onClick={handleCardClick}>
@@ -60,19 +91,19 @@ function StudyCard({ study }) {
           {/* 진행 방식 뱃지는 마감일이 지난 경우 숨김 */}
           {!isStudyClosed && (
             <span className="badge badge-online">
-              {study.method || '진행 방식 미정'}
+              {displayMode}
             </span>
           )}
 
           {/* 상태 뱃지 */}
           <span
             className={`badge badge-recruiting ${isStudyClosed ? 'closed' : ''}`}>
-            {getStatusLabel(study.dueDate, study.status)}
+            {getStatusLabel(study.deadline)}
           </span>
         </div>
 
         <div className="study-meta">
-          <span className="label">마감일</span> | {study.dueDate}
+          <span className="label">마감일</span> | {study.deadline ? study.deadline : '상시모집'}
         </div>
 
         <div className="study-title">
@@ -80,7 +111,7 @@ function StudyCard({ study }) {
         </div>
 
         <div className="study-tags">
-          {(study.tags || study.techStacks || []).map((tag, i) => (
+          {(study.techStackNames || []).map((tag, i) => (
             <span key={i}># {tag} </span>
           ))}
         </div>

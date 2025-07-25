@@ -385,7 +385,7 @@ const GroupBoardSection = ({ posts, comments, onWrite  }) => {
             <h5>{selectedPost.title}</h5>
             <div className="etc">
               <span className="writer">{selectedPost.writer}</span>
-              <span className="date">{selectedPost.date}</span>
+              <span className="date">{selectedPost.regDate.slice(0, 16).replace('T', ' ')}</span>
             </div>
             <p className="content">{selectedPost.content}</p>
             <button className="back-button" onClick={() => setSelectedPost(null)}>

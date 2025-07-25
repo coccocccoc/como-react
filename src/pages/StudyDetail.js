@@ -3,10 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/StudyDetail.css';
+import axios from 'axios';
 
 function StudyDetail() {
   const location = useLocation();
   const navigate = useNavigate();
+  
 
   const study = location.state || {
     id: 1,
@@ -42,14 +44,28 @@ function StudyDetail() {
   };
 
   const handleEditClick = () => {
+    if (!studyData.recruitPostId) {
+      alert("수정할 수 없는 데이터입니다.");
+      return;
+    }
     navigate('/studies/edit', { state: studyData });
   };
 
-  const handleDeleteClick = () => {
+
+  const handleDeleteClick = async () => {
     const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
-    if (confirmDelete) {
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:8080/api/studies/${studyData.recruitPostId}`, {
+        params: { userId: studyData.userId } // 필요 시 백엔드에 맞춰서 userId 전달
+      });
+
       alert('스터디가 삭제되었습니다.');
       navigate('/studies');
+    } catch (error) {
+      console.error('❌ 삭제 실패:', error);
+      alert('스터디 삭제에 실패했습니다.');
     }
   };
 
@@ -69,6 +85,7 @@ function StudyDetail() {
   // const currentUserId = 'iseul';
   // const isOwner = studyData.nickname === currentUserId;
 
+  
   return (
     <div className="study-detail-page">
       <Navbar />
@@ -76,33 +93,33 @@ function StudyDetail() {
         <h1 className="study-detail-title">{studyData.title}</h1>
         <div className="study-detail-meta">
           <span className="study-detail-nickname">👤 {studyData.nickname}</span>
-          <span className="study-detail-date">{studyData.date}</span>
+          <span className="study-detail-date">{studyData.regDate.slice(0, 16).replace('T', ' ')}</span>
         </div>
 
         <div className="study-detail-info-box">
           <div className="info-item">
             <div className="info-label">모집 인원</div>
             <div className="info-value">
-              {approvedCount} / {(studyData.people || 0)}명
+              {approvedCount} / {(studyData.capacity || 0)}명
             </div>
           </div>
           <div className="info-item">
             <div className="info-label">예상 기간</div>
             <div className="info-value">
-              {studyData.period.start} ~ {studyData.period.end}
+              {studyData.startDate} ~ {studyData.endDate}
             </div>
           </div>
           <div className="info-item">
             <div className="info-label">진행 방식</div>
-            <div className="info-value">{studyData.method}</div>
+            <div className="info-value">{studyData.mode}</div>
           </div>
           <div className="info-item">
             <div className="info-label">모집 마감일</div>
-            <div className="info-value">{studyData.dueDate}</div>
+            <div className="info-value">{studyData.deadline}</div>
           </div>
           <div className="info-item">
             <div className="info-label">기술 스택</div>
-            <div className="info-value">{studyData.techStacks.join(', ')}</div>
+            <div className="info-value">{(studyData.techStackNames || []).join(', ')}</div>
           </div>
         </div>
 
