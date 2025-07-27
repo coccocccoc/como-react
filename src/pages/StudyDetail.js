@@ -40,7 +40,8 @@ function StudyDetail() {
   
 
   const handleApplyClick = () => {
-    navigate(`/studies/apply/${studyData.id}`, { state: studyData });
+    navigate(`/studies/apply/${studyData.groupId}`, { state: studyData });
+
   };
 
   const handleEditClick = () => {

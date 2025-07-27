@@ -69,6 +69,7 @@ function StudyRecruit() {
       const response = await axios.post('http://localhost:8080/api/studies', studyData);
       console.log('등록 성공:', response.data);
       alert('스터디가 등록되었습니다!');
+      const createdGroupId = response.data.groupId; // ✅ 등록된 스터디 그룹 ID
       navigate('/studies');
     } catch (error) {
       console.error('등록 실패:', error);

@@ -12,8 +12,7 @@ const GroupBoard = () => {
   const [posts, setPosts] = useState({});
   const [comments, setComments] = useState({}); // 댓글 상태 추가
   const [studyData, setStudyData] = useState(null);
-  // const { groupId } = useParams(); // URL에서 groupId 추출 (예: /group-board/:groupId)
-  const groupId = 7; // 임시 데이터
+  const { groupId } = useParams();
 
 
 
@@ -113,22 +112,12 @@ const GroupBoard = () => {
 
       {/* ✅ 스터디 정보 컴포넌트 */}
       {studyData && (
-        <StudyInfo
-          data={{
-            title: studyData.title,
-            author: studyData.nickname,
-            createdAt: studyData.regDate?.slice(0, 16).replace("T", " "),
-            totalMemberCount: studyData.capacity,
-            startDate: studyData.startDate,
-            endDate: studyData.endDate,
-            method: studyData.mode,
-            language: studyData.techStackNames?.join(", ")
-          }}
-        />
+        <StudyInfo data={studyData} />
       )}
 
+
       {/* ✅ 그룹 게시판 컴포넌트 */}
-      <GroupBoardSection posts={posts} comments={comments} onWrite={() => navigate("/group-board/${groupId}/register")} />
+      <GroupBoardSection posts={posts} comments={comments} onWrite={() => navigate(`/group-board/${groupId}/register`)} />
       
       <Footer />
     </div>

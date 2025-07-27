@@ -26,12 +26,12 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/group-board" element={<GroupBoard />} />
-        <Route path="/group-board/register" element={<GroupBoardRegister />} />
+        <Route path="/group-board/:groupId" element={<GroupBoard />} />
+        <Route path="/group-board/:groupId/register" element={<GroupBoardRegister />} />
         <Route path="/studies" element={<StudyList />} />
         <Route path="/studies/recruit" element={<StudyRecruit />} />
         <Route path="/studies/detail" element={<StudyDetail />} />
-        <Route path="/studies/apply/:id" element={<StudyApply />} />
+        <Route path="/studies/apply/:groupId" element={<StudyApply />} />
         <Route path="/studies/edit" element={<StudyEdit />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/mypageon" element={<MypageOn />} />
