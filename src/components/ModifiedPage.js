@@ -9,85 +9,61 @@ const ModifiedPage = () => {
   const savedProfile = JSON.parse(localStorage.getItem('userProfile'));
   const savedImage = localStorage.getItem('userImage');
 
-  console.log(savedProfile, '!!!!')
 
-  const [profile, setProfile] = useState(
-    savedProfile || {
-      name: "홍길동",
-      email: "example@email.com",
-      profileImage: savedImage || null 
-    }
-  );
-
-  
+  const [nickname, setNickname] = useState(savedProfile?.name || "");
+  const [email, setEmail] = useState(savedProfile?.email || "");
+  const [imagePreview, setImagePreview] = useState(savedImage || null);
+  const [uploadFile, setUploadFile] = useState(null);
 
   const navigate = useNavigate();
- 
-  const [image, setImage] = useState(savedImage || null);
-
-  const handleChange = (e, field) => {
-    setProfile({
-      ...profile,
-      [field]: e.target.value,
-    });
-  };
 
   const handleSave = () => {
-    // 👉 로컬에 저장
-    localStorage.setItem('userProfile', JSON.stringify(profile));
-
-    console.log("📦 저장된 토큰:", localStorage.getItem("token"));
-
-    const isValidEmail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(profile.email);
-    if (!isValidEmail) {
+    if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email)) {
       alert("올바른 이메일 형식이 아닙니다.");
       return;
+    }
+
+    const formData = new FormData();
+    formData.append("nickname", nickname);
+    formData.append("email", email);
+    if (uploadFile) {
+      formData.append("uploadFile", uploadFile); // ✔ 파일 첨부
     }
 
     fetch('http://localhost:8080/api/user/update-profile', {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify({
-        nickname: profile.name,
-        email: profile.email,
-        profileImage: profile.profileImage 
-      })
+      body: formData,
     })
       .then((res) => {
         if (!res.ok) throw new Error('서버 반영 실패');
         alert('프로필이 저장되었습니다.');
+        localStorage.setItem('userProfile', JSON.stringify({ name: nickname, email }));
         navigate('/mypage');
       })
       .catch((err) => {
         console.error('수정 에러:', err);
         alert('서버에 프로필 저장 중 오류가 발생했습니다.');
       });
-
-      
   };
 
-  
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setUploadFile(file);
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); // ✅ 이미지 프리뷰용
-        localStorage.setItem('userImage', reader.result);
-
-        // ✅ profile 상태에도 같이 반영 (저장 시 일관성 확보)
-        setProfile(prev => ({
-          ...prev,
-          profileImage: reader.result
-        }));
+        setImagePreview(reader.result); // 미리보기용 이미지 저장
+        localStorage.setItem('userImage', reader.result); // 원하면 생략 가능
       };
       reader.readAsDataURL(file);
     }
   };
+
 
 
 
@@ -108,12 +84,11 @@ const ModifiedPage = () => {
         <div className="card-M">
           <div className="profile-image-container">
             <label htmlFor="file-upload" className="profile-image-label">
-              {/* 업로드된 이미지가 있으면 그 이미지, 없으면 기본 이미지 */}
-              <img
-                src={image || defaultProfile}
-                alt="프로필 이미지"
-                className="profile-image"
-              />
+            <img
+              src={imagePreview || defaultProfile}
+              alt="프로필 이미지"
+              className="profile-image"
+            />
             </label>
             <input
               id="file-upload"
@@ -127,22 +102,22 @@ const ModifiedPage = () => {
           <div className="card-body">
             <div className="profile-field">
               <label>이름: </label>
-              <input
-                type="text"
-                value={profile.name}
-                onChange={(e) => handleChange(e, 'name')}
-                className="input-field"
-              />
+            <input
+              type="text"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              className="input-field"
+            />
             </div>
 
             <div className="profile-field">
               <label>이메일: </label>
-              <input
-                type="email"
-                value={profile.email}
-                onChange={(e) => handleChange(e, 'email')}
-                className="input-field"
-              />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
+            />
             </div>
 
             <button onClick={handleSave} className="edit-btn-m">저장</button>

@@ -7,16 +7,14 @@ const SideNav = () => {
 
   const savedProfile = JSON.parse(localStorage.getItem('userProfile'));
 
-  console.log(savedProfile, '```````')
-
   const [profile, setProfile] = useState(savedProfile || {
     name: "홍길동",
     email: "example@email.com",
-    profileImage: null
+    imgPath: null
   });
 
-  // console.log(profile, '~~~~~')
-  // const [setEmailInput] = useState("");
+  console.log("👉 imgPath:", profile.imgPath); 
+
 
 
   useEffect(() => {
@@ -30,13 +28,12 @@ const SideNav = () => {
         setProfile({
           name: data.nickname,
           email: data.email,
-          profileImage: data.profileImage
+          imgPath: data.imgPath || null 
         });
-
-        // setEmailInput(data.email || "");
-        // localStorage.setItem('userImage', data.profileImage || ''); 
       });
   }, []);
+  
+  
 
   return (
       <div className="sidenav-layout">
@@ -54,7 +51,7 @@ const SideNav = () => {
         <div className="card">
           <div className="sidenav-profile-image-container">
           <img
-            src={profile.profileImage || defaultProfile}
+            src={profile.imgPath || defaultProfile}
             alt="프로필 이미지"
             className="sidenav-profile-image"
           />
