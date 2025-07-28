@@ -17,8 +17,11 @@ function LoginPage() {
   const handleKakaoLogin = () => {
     window.location.href =
       `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}` +
-      `&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
+      `&redirect_uri=${KAKAO_REDIRECT_URI}` +
+      `&response_type=code` +
+      `&prompt=login`; 
   };
+
 
   const handleGoogleLogin = () => {
     window.location.href =

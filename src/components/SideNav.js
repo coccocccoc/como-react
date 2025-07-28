@@ -1,19 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SideNav.css';
 import defaultProfile from '../img/profile.svg';
 import { Link } from 'react-router-dom';
 
 const SideNav = () => {       
-  const savedProfile = localStorage.getItem('userProfile');
-  const savedImage = localStorage.getItem('userImage');
+
+  const savedProfile = JSON.parse(localStorage.getItem('userProfile'));
+
+  console.log(savedProfile, '```````')
+
+  const [profile, setProfile] = useState(savedProfile || {
+    name: "홍길동",
+    email: "example@email.com",
+    profileImage: null
+  });
+
+  // console.log(profile, '~~~~~')
+  // const [setEmailInput] = useState("");
 
 
-  const profile = savedProfile
-    ? JSON.parse(savedProfile)
-    : {
-      name: "홍길동",
-      email: "example@email.com",
-    };
+  useEffect(() => {
+    fetch('http://localhost:8080/api/user/me', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setProfile({
+          name: data.nickname,
+          email: data.email,
+          profileImage: data.profileImage
+        });
+
+        // setEmailInput(data.email || "");
+        // localStorage.setItem('userImage', data.profileImage || ''); 
+      });
+  }, []);
 
   return (
       <div className="sidenav-layout">
@@ -30,11 +53,11 @@ const SideNav = () => {
 
         <div className="card">
           <div className="sidenav-profile-image-container">
-            <img
-              src={savedImage || defaultProfile}
-              alt="프로필 이미지"
-              className="sidenav-profile-image"
-            />
+          <img
+            src={profile.profileImage || defaultProfile}
+            alt="프로필 이미지"
+            className="sidenav-profile-image"
+          />
           </div>
 
           <div className="sidenav-card-body">

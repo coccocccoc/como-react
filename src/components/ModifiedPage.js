@@ -7,16 +7,22 @@ import { Link, useNavigate } from 'react-router-dom'
 const ModifiedPage = () => {
 
   const savedProfile = JSON.parse(localStorage.getItem('userProfile'));
+  const savedImage = localStorage.getItem('userImage');
+
+  console.log(savedProfile, '!!!!')
 
   const [profile, setProfile] = useState(
     savedProfile || {
       name: "홍길동",
-      email: "example@email.com"
+      email: "example@email.com",
+      profileImage: savedImage || null 
     }
   );
 
+  
+
   const navigate = useNavigate();
-  const savedImage = localStorage.getItem('userImage');
+ 
   const [image, setImage] = useState(savedImage || null);
 
   const handleChange = (e, field) => {
@@ -30,14 +36,25 @@ const ModifiedPage = () => {
     // 👉 로컬에 저장
     localStorage.setItem('userProfile', JSON.stringify(profile));
 
-    // 👉 서버에 닉네임 반영 (email은 수정 안 함)
-    fetch('http://localhost:8080/api/user/update-nickname', {
+    console.log("📦 저장된 토큰:", localStorage.getItem("token"));
+
+    const isValidEmail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(profile.email);
+    if (!isValidEmail) {
+      alert("올바른 이메일 형식이 아닙니다.");
+      return;
+    }
+
+    fetch('http://localhost:8080/api/user/update-profile', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify({ nickname: profile.name }),
+      body: JSON.stringify({
+        nickname: profile.name,
+        email: profile.email,
+        profileImage: profile.profileImage 
+      })
     })
       .then((res) => {
         if (!res.ok) throw new Error('서버 반영 실패');
@@ -45,22 +62,33 @@ const ModifiedPage = () => {
         navigate('/mypage');
       })
       .catch((err) => {
-        console.error('닉네임 수정 에러:', err);
+        console.error('수정 에러:', err);
         alert('서버에 프로필 저장 중 오류가 발생했습니다.');
       });
+
+      
   };
+
+  
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
-        localStorage.setItem('userImage', reader.result); // ✅ 이미지도 저장
+        setImage(reader.result); // ✅ 이미지 프리뷰용
+        localStorage.setItem('userImage', reader.result);
+
+        // ✅ profile 상태에도 같이 반영 (저장 시 일관성 확보)
+        setProfile(prev => ({
+          ...prev,
+          profileImage: reader.result
+        }));
       };
       reader.readAsDataURL(file);
     }
   };
+
 
 
   return (
@@ -112,7 +140,6 @@ const ModifiedPage = () => {
               <input
                 type="email"
                 value={profile.email}
-                disabled 
                 onChange={(e) => handleChange(e, 'email')}
                 className="input-field"
               />
