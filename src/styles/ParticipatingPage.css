@@ -1,0 +1,13 @@
+.studylist-study-list {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1359px;
+  width: 100%;
+}
+
+.studylist-study-list > * {
+  flex: 0 0 calc(25% - 20px);
+  box-sizing: border-box;
+}

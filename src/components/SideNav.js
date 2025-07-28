@@ -1,71 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SideNav.css';
-import defaultProfile from '../img/profile.svg';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import MailSendModal from './MailSendModal';
 
-const SideNav = () => {       
-  const savedProfile = localStorage.getItem('userProfile');
-  const savedImage = localStorage.getItem('userImage');
+const SideNav = () => {
+  const location = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-  const profile = savedProfile
-    ? JSON.parse(savedProfile)
-    : {
-      name: "홍길동",
-      email: "example@email.com",
-      region: "구미",
-      age: "20"
-    };
+  const isInbox = location.pathname === '/mypage/messages/inbox';
+  const isSent = location.pathname === '/mypage/messages/sent';
+  const isMessagesPage = location.pathname.startsWith('/mypage/messages');
 
   return (
-      <div className="sidenav-layout">
-        <div className="sidenav-sidebar">
-          <div style={{ padding: '5px 0px 20px 5px' }}><h4>마이페이지</h4></div>
+    <div className="sidenav-sidebar">
+      <div className="sidenav-text">
+        <h4>마이페이지</h4>
 
-          <p><Link to={'/mypageon'}>참여하고 있는 스터디</Link></p>
-          <p><Link to={'/mypageoff'}>종료한 스터디</Link></p>
-          <p><Link to={'/registerlist'}>작성한 글</Link></p>
-           <p><Link to={'#'}>내가 만든 스터디</Link></p>
-          <p><Link to={'/mypagelikes'}>찜 목록</Link></p>
-          <p><Link to={'/mail'}>쪽지함</Link></p>
+        <p><NavLink to="/mypage/participating" className="sidenav-link">참여 스터디</NavLink></p>
+        <p><NavLink to="/mypage/finished" className="sidenav-link">종료 스터디</NavLink></p>
+        <p><NavLink to="/mypage/created" className="sidenav-link">내가 만든 스터디</NavLink></p>
+        <p><NavLink to="/mypage/written" className="sidenav-link">작성한 글</NavLink></p>
+        <p><NavLink to="/mypage/likes" className="sidenav-link">찜 목록</NavLink></p>
+
+        {/* 쪽지함 라인 */}
+        <div className="message-row">
+          <NavLink
+            to="/mypage/messages/inbox"
+            className={({ isActive }) =>
+              isActive || isInbox || isSent ? 'sidenav-link active' : 'sidenav-link'
+            }
+          >
+            쪽지함
+          </NavLink>
+          <button
+            className="message-write-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsModalOpen(true);
+            }}
+          >
+            쪽지 쓰기
+          </button>
         </div>
 
-        <div className="card">
-          <div className="sidenav-profile-image-container">
-            <img
-              src={savedImage || defaultProfile}
-              alt="프로필 이미지"
-              className="sidenav-profile-image"
-            />
+        {/* 서브 메뉴 */}
+        {isMessagesPage && (
+          <div className="message-submenu">
+            <p
+              className={isInbox ? 'submenu-link active' : 'submenu-link inactive'}
+              onClick={() => window.location.href = '/mypage/messages/inbox'}
+            >
+              수신함
+            </p>
+            <p
+              className={isSent ? 'submenu-link active' : 'submenu-link inactive'}
+              onClick={() => window.location.href = '/mypage/messages/sent'}
+            >
+              발신함
+            </p>
           </div>
+        )}
 
-          <div className="sidenav-card-body">
-            <div className="sidenav-profile-field">
-              <label>이름: </label>
-              <span>{profile.name}</span>
-            </div>
-
-            <div className="sidenav-profile-field">
-              <label>이메일: </label>
-              <span>{profile.email}</span>
-            </div>
-
-          <div className="sidenav-profile-field">
-            <label>지역: </label>
-            <span>{profile.region}</span>
-          </div>
-
-          <div className="sidenav-profile-field">
-            <label>연령대: </label>
-            <span>{profile.age}</span>
-          </div>
-
-          <Link to={'/modification'} className="edit-btn-s">프로필 수정</Link>
-            
-          </div>
-        </div>
+        {/* 모달 */}
+        {isModalOpen && (
+          <MailSendModal
+            senderId={1}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
       </div>
+    </div>
   );
-};  
+};
 
 export default SideNav;

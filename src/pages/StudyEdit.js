@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Editor from '../components/Editor';
-import '../styles/StudyRecruit.css';
+import '../styles/StudyEdit.css';
 
 function StudyEdit() {
   const location = useLocation();

@@ -18,10 +18,15 @@ const bannerStyle = {
 function Main() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  console.log(isLoggedIn+'~~~~~~'
+  )
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+    console.log(token+'!!!!')
   }, []);
+
 
   return (
     <div className="app">

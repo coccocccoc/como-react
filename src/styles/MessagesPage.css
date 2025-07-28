@@ -1,0 +1,24 @@
+.messages-page {
+  padding: 40px 60px;
+}
+
+.messages-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  background-color: #333;
+  color: #ccc;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background-color: #00F438;
+  color: black;
+  font-weight: bold;
+}

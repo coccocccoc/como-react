@@ -1,25 +1,21 @@
-import React, { useState } from 'react'
-import './ModifiedPage.css'
+import React, { useState } from 'react';
+import './ModifiedPage.css';
 import defaultProfile from '../img/profile.svg';
-
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import SideNav from '../components/SideNav';
 
 const ModifiedPage = () => {
-
   const savedProfile = JSON.parse(localStorage.getItem('userProfile'));
+  const savedImage = localStorage.getItem('userImage');
 
   const [profile, setProfile] = useState(
     savedProfile || {
-      name: "홍길동",
-      email: "example@email.com",
-      region: "구미",
-      age: "20"
+      name: '홍길동',
+      email: 'example@email.com',
     }
   );
-
-  const navigate = useNavigate();
-  const savedImage = localStorage.getItem('userImage');
   const [image, setImage] = useState(savedImage || null);
+  const navigate = useNavigate();
 
   const handleChange = (e, field) => {
     setProfile({
@@ -30,7 +26,8 @@ const ModifiedPage = () => {
 
   const handleSave = () => {
     localStorage.setItem('userProfile', JSON.stringify(profile));
-    navigate('/mypage'); // 또는 navigate(-1) 로 이전 페이지로
+    localStorage.setItem('userImage', image);
+    navigate('/mypage');
   };
 
   const handleImageUpload = (e) => {
@@ -39,94 +36,67 @@ const ModifiedPage = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
-        localStorage.setItem('userImage', reader.result); // ✅ 이미지도 저장
       };
       reader.readAsDataURL(file);
     }
   };
 
-
   return (
+    <div className="mypage-container">
+      <div className="mypage-content">
+        {/* 왼쪽 사이드바 */}
+        <SideNav />
 
-      <div className="layout">
-        <div className="sidebar">
-          <div style={{ padding: '5px 0px 20px 5px' }}><h4>마이페이지</h4></div>
-
-          <p><Link to={'/mypageon'}>참여하고 있는 스터디</Link></p>
-          <p><Link to={'/mypageoff'}>종료한 스터디</Link></p>
-          <p><Link to={'/registerlist'}>작성한 글</Link></p>
-          <p><Link to={'#'}>내가 만든 스터디</Link></p>
-          <p><Link to={'/mypagelikes'}>찜 목록</Link></p>
-          <p><Link to={'/mail'}>쪽지함</Link></p>
-        </div>
-
-        <div className="card-M">
-          <div className="profile-image-container">
-            <label htmlFor="file-upload" className="profile-image-label">
-              {/* 업로드된 이미지가 있으면 그 이미지, 없으면 기본 이미지 */}
-              <img
-                src={image || defaultProfile}
-                alt="프로필 이미지"
-                className="profile-image"
-              />
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="upload-input"
-            />
-          </div>
-
-          <div className="card-body">
-            <div className="profile-field">
-              <label>이름: </label>
-              <input
-                type="text"
-                value={profile.name}
-                onChange={(e) => handleChange(e, 'name')}
-                className="input-field"
-              />
+        {/* 오른쪽 프로필 수정 UI */}
+        <div className="mypage-right">
+          <div className="profile-layout">
+            {/* 프로필 이미지 + 파일 업로드 */}
+            <div className="profile-image-container">
+              <label htmlFor="file-upload">
+                <img
+                  src={image || defaultProfile}
+                  alt="프로필"
+                  className="profile-image"
+                />
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="upload-input"
+                />
+              </label>
             </div>
 
-            <div className="profile-field">
-              <label>이메일: </label>
-              <input
-                type="email"
-                value={profile.email}
-                onChange={(e) => handleChange(e, 'email')}
-                className="input-field"
-              />
+            <div className="sidenav-info-box">
+              <p>
+                <strong>닉네임:</strong>{' '}
+                <input
+                  type="text"
+                  value={profile.name}
+                  onChange={(e) => handleChange(e, 'name')}
+                  className="input-field"
+                />
+              </p>
+              <p>
+                <strong>이메일:</strong>{' '}
+                <input
+                  type="email"
+                  value={profile.email}
+                  onChange={(e) => handleChange(e, 'email')}
+                  className="input-field"
+                />
+              </p>
+              <div className="button-group">
+                <button onClick={handleSave} className="edit-btn-m">저장</button>
+                <button onClick={() => navigate('/mypage')} className="cancel-btn-m">취소</button>
+              </div>
             </div>
-
-          <div className="profile-field">
-            <label>지역: </label>
-            <input
-              type="region"
-              value={profile.region}
-              onChange={(e) => handleChange(e, 'region')}
-              className="input-field"
-            />
           </div>
-
-          <div className="profile-field">
-            <label>연령대: </label>
-            <input
-              type="age"
-              value={profile.age}
-              onChange={(e) => handleChange(e, 'age')}
-              className="input-field"
-            />
-          </div>
-
-            <button onClick={handleSave} className="edit-btn-m">저장</button>
-          </div>
-
         </div>
       </div>
+    </div>
+  );
+};
 
-  )
-}
-
-export default ModifiedPage
+export default ModifiedPage;

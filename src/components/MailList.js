@@ -1,7 +1,9 @@
+// MailList.jsx
 import React, { useState, useEffect } from "react";
 import "./MailList.css";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import MailSendModal from "./MailSendModal"; // 모달용 쪽지쓰기 컴포넌트 import
 
 const MailList = ({ currentUserId = 2 }) => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -11,41 +13,37 @@ const MailList = ({ currentUserId = 2 }) => {
     const [selectedPost, setSelectedPost] = useState(null);
     const [mode, setMode] = useState("received");
     const [currentPage, setCurrentPage] = useState(1);
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+
     const mailsPerPage = 10;
 
-    // 📥 쪽지 목록 불러오기
     useEffect(() => {
         const url =
             mode === "received"
                 ? `http://localhost:8080/api/messages/received/${currentUserId}`
                 : `http://localhost:8080/api/messages/sent/${currentUserId}`;
 
-        axios
-            .get(url)
+        axios.get(url)
             .then((res) => {
                 setAllMails(res.data);
-
-                // ✅ selectedId가 있다면 상세 보기 자동 선택
                 if (selectedId) {
                     const found = res.data.find((mail) => mail.id === parseInt(selectedId, 10));
                     if (found) setSelectedPost(found);
                 }
             })
-            .catch((err) =>
-                console.error(`${mode === "received" ? "받은" : "보낸"} 쪽지 불러오기 실패:`, err)
-            );
+            .catch((err) => console.error("쪽지 불러오기 실패:", err));
     }, [mode, currentUserId, selectedId]);
 
-    // ✉️ 쪽지 클릭 시 상세 보기로 전환
     const handleClick = (post) => {
         setSelectedPost(post);
         setSearchParams({ selectedId: post.id });
     };
 
     const totalPages = Math.ceil(allMails.length / mailsPerPage);
-    const indexOfLastMail = currentPage * mailsPerPage;
-    const indexOfFirstMail = indexOfLastMail - mailsPerPage;
-    const currentMails = allMails.slice(indexOfFirstMail, indexOfLastMail);
+    const currentMails = allMails.slice(
+        (currentPage - 1) * mailsPerPage,
+        currentPage * mailsPerPage
+    );
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -57,7 +55,6 @@ const MailList = ({ currentUserId = 2 }) => {
         <div className="maillist-board-right">
             <h2 className="section-title-m">쪽지함</h2>
 
-            {/* 📤 받은/보낸 쪽지 토글 */}
             <div className="mail-mode-toggle">
                 <button
                     className={`toggle-btn ${mode === "received" ? "active" : ""}`}
@@ -81,7 +78,6 @@ const MailList = ({ currentUserId = 2 }) => {
                 </button>
             </div>
 
-            {/* 📬 쪽지 리스트 */}
             {!selectedPost && (
                 <>
                     <ul className="mail-list">
@@ -107,7 +103,6 @@ const MailList = ({ currentUserId = 2 }) => {
                             ))}
                     </ul>
 
-                    {/* 📄 페이지네이션 */}
                     {totalPages > 1 && (
                         <div className="pagination">
                             {Array.from({ length: totalPages }, (_, i) => (
@@ -122,11 +117,15 @@ const MailList = ({ currentUserId = 2 }) => {
                         </div>
                     )}
 
-                    <Link to="/mailsend" className="mail-register">쪽지쓰기</Link>
+                    {/* ✏️ 쪽지쓰기 버튼 → 모달 */}
+                    <button className="mail-register" onClick={() => setIsModalOpen(true)}>
+                        쪽지쓰기
+                    </button>
+
+                    {isModalOpen && <MailSendModal onClose={() => setIsModalOpen(false)} senderId={currentUserId} />}
                 </>
             )}
 
-            {/* 📑 쪽지 상세 */}
             {selectedPost && (
                 <div className="mail-detail">
                     <h5>{selectedPost.title}</h5>

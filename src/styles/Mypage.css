@@ -1,0 +1,54 @@
+.mypage-container {
+  /* background-color: #161616; */
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mypage-content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: #0e0e0e;
+}
+
+.mypage-right {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mypage-profile-wrapper {
+  padding: 40px;
+}
+
+.mypage-card-section {
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  /* background-color: #161616; 카드 배경 */
+}
+
+/* CreatedPage */
+.created-empty-wrapper {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.created-empty-box {
+  background-color: #5c5c5c;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  text-align: center;
+  align-items: center;
+}
+

@@ -45,13 +45,14 @@ function StudyCard({ study }) {
       period: study.period || { start: '2025.07.10', end: '2025.07.31' },
       techStacks: study.techStacks || study.tags || [],
       content: study.content || '<p>상세 설명 없음</p>',
-      method: study.method || '온/오프라인',
+      method: study.method || study.status || '온/오프라인',
     };
 
     navigate('/studies/detail', { state: fullStudyData });
   };
 
   const isStudyClosed = isClosed(study.dueDate) || study.status === '마감';
+  const displayMethod = study.method || study.status || '진행 방식 미정';
 
   return (
     <div className="study-card" onClick={handleCardClick}>
@@ -60,7 +61,7 @@ function StudyCard({ study }) {
           {/* 진행 방식 뱃지는 마감일이 지난 경우 숨김 */}
           {!isStudyClosed && (
             <span className="badge badge-online">
-              {study.method || '진행 방식 미정'}
+              {displayMethod}
             </span>
           )}
 
