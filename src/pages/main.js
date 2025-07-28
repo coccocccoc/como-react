@@ -37,7 +37,7 @@ function Main() {
           <StudySection title="내가 활동하는 스터디" data={cardData.myStudies} />
         )}
         <StudySection title="인기 스터디" data={cardData.popularStudies} />
-        <StudySection title="우리동네 스터디" data={cardData.localStudies} />
+        <StudySection title="최신 스터디" data={cardData.localStudies} />
       </main>
 
       {/* Footer */}

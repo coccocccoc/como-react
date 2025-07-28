@@ -11,9 +11,7 @@ const ModifiedPage = () => {
   const [profile, setProfile] = useState(
     savedProfile || {
       name: "홍길동",
-      email: "example@email.com",
-      region: "구미",
-      age: "20"
+      email: "example@email.com"
     }
   );
 
@@ -29,8 +27,27 @@ const ModifiedPage = () => {
   };
 
   const handleSave = () => {
+    // 👉 로컬에 저장
     localStorage.setItem('userProfile', JSON.stringify(profile));
-    navigate('/mypage'); // 또는 navigate(-1) 로 이전 페이지로
+
+    // 👉 서버에 닉네임 반영 (email은 수정 안 함)
+    fetch('http://localhost:8080/api/user/update-nickname', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({ nickname: profile.name }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('서버 반영 실패');
+        alert('프로필이 저장되었습니다.');
+        navigate('/mypage');
+      })
+      .catch((err) => {
+        console.error('닉네임 수정 에러:', err);
+        alert('서버에 프로필 저장 중 오류가 발생했습니다.');
+      });
   };
 
   const handleImageUpload = (e) => {
@@ -95,30 +112,11 @@ const ModifiedPage = () => {
               <input
                 type="email"
                 value={profile.email}
+                disabled 
                 onChange={(e) => handleChange(e, 'email')}
                 className="input-field"
               />
             </div>
-
-          <div className="profile-field">
-            <label>지역: </label>
-            <input
-              type="region"
-              value={profile.region}
-              onChange={(e) => handleChange(e, 'region')}
-              className="input-field"
-            />
-          </div>
-
-          <div className="profile-field">
-            <label>연령대: </label>
-            <input
-              type="age"
-              value={profile.age}
-              onChange={(e) => handleChange(e, 'age')}
-              className="input-field"
-            />
-          </div>
 
             <button onClick={handleSave} className="edit-btn-m">저장</button>
           </div>

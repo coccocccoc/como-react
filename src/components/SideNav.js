@@ -13,8 +13,6 @@ const SideNav = () => {
     : {
       name: "홍길동",
       email: "example@email.com",
-      region: "구미",
-      age: "20"
     };
 
   return (
@@ -49,16 +47,6 @@ const SideNav = () => {
               <label>이메일: </label>
               <span>{profile.email}</span>
             </div>
-
-          <div className="sidenav-profile-field">
-            <label>지역: </label>
-            <span>{profile.region}</span>
-          </div>
-
-          <div className="sidenav-profile-field">
-            <label>연령대: </label>
-            <span>{profile.age}</span>
-          </div>
 
           <Link to={'/modification'} className="edit-btn-s">프로필 수정</Link>
             
