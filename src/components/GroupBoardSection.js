@@ -59,9 +59,21 @@ const GroupBoardSection = ({ posts, comments, onWrite }) => {
   // 신청자 목록 불러오기
   useEffect(() => {
     if (mode === "approve") {
-      axios.get(`http://localhost:8080/api/study-group-members/pending?groupId=${groupId}`)
+      axios
+        .get(`http://localhost:8080/api/study-group-members/pending?groupId=${groupId}`)
         .then((res) => {
-          setPendingMembers(res.data);
+
+          // 👉 가공해서 필요한 필드 만들어줌
+          const converted = res.data.map((m) => ({
+            id: m.userId,
+            name: m.nickname, 
+            date: new Date().toISOString().slice(0, 10), // 수정..
+            userId: m.userId,
+            groupId: m.groupId,
+            applyTitle: m.applyTitle,
+            applyContent: m.applyContent,
+          }));
+          setPendingMembers(converted);
         })
         .catch((err) => {
           console.error("신청자 목록 불러오기 실패", err);
@@ -73,6 +85,11 @@ const GroupBoardSection = ({ posts, comments, onWrite }) => {
   // 신청글 불러오기
   useEffect(() => {
     if (selectedMember) {
+      console.log("📨 신청글 요청 파라미터", {
+        groupId,
+        userId: selectedMember.userId
+      });
+
       axios
         .get(`http://localhost:8080/api/study-group-members/application?groupId=${groupId}&userId=${selectedMember.userId}`)
         .then((res) => {
@@ -82,7 +99,7 @@ const GroupBoardSection = ({ posts, comments, onWrite }) => {
           });
         })
         .catch((err) => {
-          console.error("신청글 불러오기 실패", err);
+          console.error("❌ 신청글 불러오기 실패", err);
           setApplicationContent({
             title: "제목 없음",
             content: "신청 내용을 불러올 수 없습니다.",
@@ -91,23 +108,24 @@ const GroupBoardSection = ({ posts, comments, onWrite }) => {
     }
   }, [selectedMember, groupId]);
 
-  // 승인 거절 처리
-  const handleMemberApproval = (userId, isAccepted) => {
-  const url = isAccepted
-    ? `http://localhost:8080/api/study-group-members/approve`
-    : `http://localhost:8080/api/study-group-members/reject`;
 
-  axios.post(url, { groupId, userId })
-    .then(() => {
-      setPendingMembers((prev) => prev.filter((m) => m.userId !== userId));
-      setSelectedMember(null);
-      setApplicationContent({ title: "", content: "" });
-    })
-    .catch((err) => {
-      console.error("승인/거절 처리 실패", err);
-      alert("처리 중 오류가 발생했습니다.");
-    });
-};
+  // 승인 거절 처리
+  const handleMemberApproval = (memberId, isAccepted) => {
+    const url = isAccepted
+      ? `http://localhost:8080/api/study-group-members/approve/${memberId}`
+      : `http://localhost:8080/api/study-group-members/reject/${memberId}`;
+
+    axios.post(url)
+      .then(() => {
+        setPendingMembers((prev) => prev.filter((m) => m.id !== memberId));
+        setSelectedMember(null);
+        setApplicationContent({ title: "", content: "" });
+      })
+      .catch((err) => {
+        console.error("승인/거절 처리 실패", err);
+        alert("처리 중 오류가 발생했습니다.");
+      });
+  };
 
 
 
@@ -396,8 +414,8 @@ const GroupBoardSection = ({ posts, comments, onWrite }) => {
                   <h4>{selectedMember.name}님의 가입 신청</h4>
 
                   <div className="application-details">
-                    <p className="application-title">{applicationContent.title}</p>
-                    <p className="application-body">{applicationContent.content}</p>
+                    <p className="application-title">{applicationContent.applyTitle}</p>
+                    <p className="application-body">{applicationContent.applyContent}</p>
                   </div>
 
                   <div className="approval-buttons">
