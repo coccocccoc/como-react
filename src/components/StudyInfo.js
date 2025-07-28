@@ -24,8 +24,8 @@ const StudyInfo = ({ data }) => {
       {/* 정보 박스 */}
       <div className="studyinfo-study-detail-info-box">
         <div className="studyinfo-info-item">
-          <div className="studyinfo-info-label">모집 인원</div>
-          <div className="studyinfo-info-value">{data.capacity}명</div>
+          <div className="studyinfo-info-label">참여 인원</div>
+          <div className="studyinfo-info-value">{data.approvedMemberCount ?? 0} / {data.capacity}명</div>
         </div>
 
         <div className="studyinfo-info-item">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -30,6 +30,8 @@ function StudyDetail() {
   };
 
   const [studyData, setStudyData] = useState(study);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [approvedMemberCount, setApprovedMemberCount] = useState(0);
   const approvedCount = (studyData.approved || []).length;
   const applicants = studyData.applicants || [];
   const maxPeople = Number(studyData.people || 0);
@@ -39,9 +41,65 @@ function StudyDetail() {
   const closed = dueDate < today || studyData.status === '마감';
   
 
-  const handleApplyClick = () => {
-    navigate(`/studies/apply/${studyData.groupId}`, { state: studyData });
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    console.log("✅ 로컬 userId:", storedUserId);
+    console.log("✅ studyData.userId:", study.userId);  // 초기값
+    console.log("✅ studyData 전체:", study);
+    if (storedUserId) {
+      setCurrentUserId(Number(storedUserId)); // 문자열 → 숫자 변환
+    }
+  }, []);
+  const isOwner = studyData.userId === currentUserId;
 
+  useEffect(() => {
+  const storedUserId = localStorage.getItem("userId");
+  if (storedUserId) {
+    setCurrentUserId(Number(storedUserId));
+  }
+
+  // 승인된 멤버 수 조회
+  axios.get(`http://localhost:8080/api/studies/members/count`, {
+    params: { groupId: study.groupId }
+  })
+    .then((res) => {
+      setApprovedMemberCount(res.data);
+    })
+    .catch((err) => {
+      console.error("✅ 멤버 수 조회 실패:", err);
+    });
+}, []);
+
+
+  const handleApplyClick = async () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await axios.get(`http://localhost:8080/api/studies/is-joined`, {
+        params: {
+          groupId: studyData.groupId,
+          userId: userId
+        }
+      });
+
+      if (res.data === true) {
+        alert("이미 해당 스터디에 가입되어 있습니다.");
+        return;
+      }
+
+      navigate(`/studies/apply/${studyData.groupId}`, { state: studyData });
+
+    } catch (err) {
+      console.error("가입 여부 확인 중 오류:", err);
+      alert("가입 여부 확인에 실패했습니다.");
+    }
   };
 
   const handleEditClick = () => {
@@ -101,7 +159,7 @@ function StudyDetail() {
           <div className="info-item">
             <div className="info-label">모집 인원</div>
             <div className="info-value">
-              {approvedCount} / {(studyData.capacity || 0)}명
+              {approvedMemberCount} / {(studyData.capacity || 0)}명
             </div>
           </div>
           <div className="info-item">
@@ -116,7 +174,7 @@ function StudyDetail() {
           </div>
           <div className="info-item">
             <div className="info-label">모집 마감일</div>
-            <div className="info-value">{studyData.deadline}</div>
+            <div className="info-value">{studyData.deadline ? studyData.deadline : '상시 모집'}</div>
           </div>
           <div className="info-item">
             <div className="info-label">기술 스택</div>
@@ -153,12 +211,16 @@ function StudyDetail() {
         */}
 
         <div className="study-detail-btn-wrapper">
-          <button className="study-edit-btn" onClick={handleEditClick}>
-            수정
-          </button>
-          <button className="study-delete-btn" onClick={handleDeleteClick}>
-            삭제
-          </button>
+          {isOwner && (
+            <>
+              <button className="study-edit-btn" onClick={handleEditClick}>
+                수정
+              </button>
+              <button className="study-delete-btn" onClick={handleDeleteClick}>
+                삭제
+              </button>
+            </>
+            )}
 
           {!closed && (
             <button className="study-detail-apply-btn" onClick={handleApplyClick}>

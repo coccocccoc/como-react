@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import WishGray from '../img/wish1.svg';
 import WishGreen from '../img/wish2.svg';
 
-function StudyCard({ study }) {
+function StudyCard({ study, to = '/studies/detail' }) {
   const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
 
@@ -60,6 +60,11 @@ function StudyCard({ study }) {
   };
 
   const handleCardClick = () => {
+    if (to === '/group-board' && study.groupId) {
+      navigate(`/group-board/${study.groupId}`);
+      return;
+    }
+
     const fullStudyData = {
       ...study,
       title: study.title,
@@ -75,6 +80,7 @@ function StudyCard({ study }) {
       method: study.mode,
       date: study.regDate?.slice(0, 10),
     };
+
     navigate('/studies/detail', { state: fullStudyData });
   };
 

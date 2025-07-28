@@ -11,8 +11,8 @@ const useNotificationSocket = (userId, onMessageReceive) => {
             reconnectDelay: 5000,
             onConnect: () => {
                 const path = `/topic/notifications/${userId}`;
-                console.log("✅ WebSocket 연결 성공:", userId);
-                console.log("📡 구독 주소:", path);
+                // console.log("✅ WebSocket 연결 성공:", userId);
+                // console.log("📡 구독 주소:", path);
                 stompClient.subscribe(path, (message) => {
                     const notification = JSON.parse(message.body);
                     console.log("📩 수신된 알림:", notification);

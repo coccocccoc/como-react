@@ -67,11 +67,11 @@ function StudyList() {
     .filter(study =>
       selectedTags.length === 0 ||
       selectedTags.every(tag =>
-        (study.tags || []).map(t => t.toLowerCase()).includes(tag.toLowerCase())
+        (study.techStackNames || []).map(t => t.toLowerCase()).includes(tag.toLowerCase())
       )
     )
     .filter(study => study.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter(study => selectedMethod === '전체' || study.method === selectedMethod);
+    .filter(study => selectedMethod === '전체' || study.mode === selectedMethod);
 
   return (
     <div className="study-list-page">
