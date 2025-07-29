@@ -4,16 +4,8 @@ import StudySection from "../components/StudySection";
 import "../styles/main.css";
 import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
+import mainBannerImg from "../img/main.jpg";
 import axios from "axios";
-
-const bannerStyle = {
-  width: "100%",
-  height: "430px",
-  backgroundColor: "#ddd",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center"
-};
 
 function Main() {
   const [localStudies, setLocalStudies] = useState([]);
@@ -109,7 +101,9 @@ function Main() {
       <NavBar />
 
       {/* Banner */}
-      <div style={bannerStyle}></div>
+      <div className="main-banner">
+        <img src={mainBannerImg} alt="메인 배너" className="main-banner-img" />
+      </div>
 
       {/* Main */}
       <main className="main">

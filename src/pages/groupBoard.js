@@ -15,12 +15,14 @@ const GroupBoard = () => {
   const { groupId } = useParams();
   const location = useLocation();
   const postIdFromState = location.state?.postId || null;
+  const token = localStorage.getItem("token");
 
 
 
 
   // ✅ 스터디 모집글 정보 불러오기
   useEffect(() => {
+    console.log("보내는 토큰 🛂", token);
     axios.get(`http://localhost:8080/api/studies/group/${groupId}`)
       .then(res => {
         setStudyData(res.data);
@@ -30,11 +32,16 @@ const GroupBoard = () => {
       });
   }, [groupId]);
 
-  // ✅ 그룹 게시글 목록 불러오기
+  // ✅ 그룹 게시글 목록 불러오기 (인증 필요)
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/group-board/${groupId}`)
+      .get(`http://localhost:8080/group-board/${groupId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
+        console.log("📦 게시물 응답", res.data);
         const grouped = {};
         res.data.content.forEach((p) => {
           const cat = p.category;
@@ -49,22 +56,26 @@ const GroupBoard = () => {
         setPosts(grouped);
       })
       .catch((err) => console.error("게시글 불러오기 실패:", err));
-  }, [groupId]);
+  }, [groupId, token]);
 
-  // ✅ 댓글 불러오기
+  // ✅ 댓글 불러오기 (인증 필요)
   useEffect(() => {
     Object.keys(posts).forEach(cat => {
       posts[cat].forEach(post => {
-        axios.get(`http://localhost:8080/group-board/comments/post/${post.id}`)
-          .then(response => {
-            setComments(prev => ({ ...prev, [post.id]: response.data }));
-          })
-          .catch(error => {
-            console.error("댓글 불러오기 실패", error);
-          });
+        axios.get(`http://localhost:8080/group-board/comments/post/${post.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(response => {
+          setComments(prev => ({ ...prev, [post.id]: response.data }));
+        })
+        .catch(error => {
+          console.error("댓글 불러오기 실패", error);
+        });
       });
     });
-  }, [posts]);
+  }, [posts, token]);
 
 
 

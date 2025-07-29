@@ -9,7 +9,6 @@ const ProfileModification = () => {
     return (
         <div>
             <NavBar />
-            <Header />
 
             <ModifiedPage />
 

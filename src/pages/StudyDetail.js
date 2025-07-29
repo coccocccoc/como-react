@@ -49,8 +49,14 @@ function StudyDetail() {
       return;
     }
 
-    // ✅ postId 기준으로 상세 정보 요청
-    axios.get(`http://localhost:8080/api/studies/${postId}`)
+    const token = localStorage.getItem("token");
+
+    // ✅ 스터디 상세 정보 조회
+    axios.get(`http://localhost:8080/api/studies/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => {
         setStudyData(res.data);
       })
@@ -60,32 +66,29 @@ function StudyDetail() {
         navigate('/studies');
       });
 
-    // ✅ 로그인 사용자 정보 가져오기
+    // ✅ 로그인 사용자 ID 저장
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setCurrentUserId(Number(storedUserId));
     }
   }, [postId, navigate]);
 
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId) {
-      setCurrentUserId(Number(storedUserId)); // 문자열 → 숫자 변환
-    }
-  }, []);
   const isOwner = studyData.userId === currentUserId;
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setCurrentUserId(Number(storedUserId));
     }
 
-    // ✅ studyData.groupId가 존재하고 유효할 때만 요청
+    // ✅ 승인된 멤버 수 조회 (토큰 포함)
     if (studyData && studyData.groupId) {
       axios.get(`http://localhost:8080/api/studies/members/count`, {
-        params: { groupId: studyData.groupId }
+        params: { groupId: studyData.groupId },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then((res) => {
           setApprovedMemberCount(res.data);
@@ -113,6 +116,9 @@ function StudyDetail() {
         params: {
           groupId: studyData.groupId,
           userId: userId
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
       });
 
@@ -142,9 +148,14 @@ function StudyDetail() {
     const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
     if (!confirmDelete) return;
 
+    const token = localStorage.getItem("token");
+
     try {
       await axios.delete(`http://localhost:8080/api/studies/${studyData.recruitPostId}`, {
-        params: { userId: studyData.userId } // 필요 시 백엔드에 맞춰서 userId 전달
+        params: { userId: studyData.userId },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
 
       alert('스터디가 삭제되었습니다.');

@@ -71,6 +71,7 @@ function StudyCard({ study, to = '/studies/detail', onClick  }) {
     }
 
     const fullStudyData = {
+      postId: study.recruitPostId,
       ...study,
       title: study.title,
       deadline: study.deadline,

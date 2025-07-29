@@ -97,15 +97,18 @@
     margin-top: 20px;
     margin-left: 220px;
     padding: 8px 16px;
-    background-color: #00f438;
-    color: #000;
+    background-color: #3BA854;
+    color: #ffffff;
     text-decoration: none;
     border-radius: 4px;
     font-weight: bold;
 }
 
 .mail-register:hover {
-    background-color: #00c82e;
+    /* background-color: #00c82e; */
+  border: 3px solid #00F438;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
 }
 
 /* 보낸/받은 탭 전환 */

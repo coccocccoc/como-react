@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Editor from '../components/Editor';
-import '../styles/StudyRecruit.css';
+import '../styles/StudyEdit.css';
 import axios from 'axios';
 
 function StudyEdit() {
@@ -15,7 +15,7 @@ function StudyEdit() {
   const [title, setTitle] = useState(study.title || '');
   const [content, setContent] = useState(study.content || '');
 
-  if (!study || !study.nickname) {
+  if (!study || !study.userId) {
     return (
       <div className="studyedit-recruit-background">
         <NavBar />
@@ -35,13 +35,26 @@ function StudyEdit() {
         content,
       };
 
+      const token = localStorage.getItem("token"); // ✅ 토큰 꺼내기
+
       const response = await axios.put(
         `http://localhost:8080/api/studies/${study.recruitPostId}`,
-        updatedStudy
+        updatedStudy,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ✅ 헤더에 토큰 추가
+          },
+        }
       );
 
       alert('스터디가 성공적으로 수정되었습니다!');
-      navigate('/studies/detail', { state: response.data }); // 상세 페이지로 이동
+      navigate('/studies/detail', {
+        state: {
+          postId: study.recruitPostId,
+          ...response.data,
+          nickname: study.nickname || '익명', // ✅ nickname 유지
+        },
+      });
     } catch (error) {
       console.error('❌ 수정 실패:', error);
       alert('스터디 수정에 실패했습니다.');

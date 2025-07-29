@@ -31,12 +31,22 @@ const GroupBoardRegister = () => {
       alert("스터디 그룹 정보가 없습니다.");
       return;
     }
+
+    const token = localStorage.getItem("token");
+
     try {
-      await axios.post("http://localhost:8080/group-board/register", {
-        ...data,
-        groupId: groupId,
-        userId: 1, // 추후 로그인 사용자로 변경
-      });
+      await axios.post(
+        "http://localhost:8080/group-board/register",
+        {
+          ...data,
+          groupId: groupId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       alert("등록 되었습니다.");
       navigate(`/group-board/${groupId}`);
     } catch (err) {
@@ -44,6 +54,8 @@ const GroupBoardRegister = () => {
       alert("등록에 실패했습니다.");
     }
   };
+
+
 
 
   return (

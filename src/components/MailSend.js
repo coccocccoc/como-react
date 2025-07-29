@@ -9,10 +9,11 @@ const MailSend = () => {
     const [recipient, setRecipient] = useState('');
     const navigate = useNavigate();
 
-    // 임시로 senderId 고정 (나중에 로그인 연동 시 수정)
     const senderId = 1;
 
     const handleSubmit = async () => {
+        console.log("보내기 버튼 눌림");
+
         if (!title || !content || !recipient) {
             alert("모든 항목을 입력해주세요.");
             return;
@@ -21,20 +22,23 @@ const MailSend = () => {
         const messageDTO = {
             senderId: senderId,
             receiverId: parseInt(recipient),
-            title: title,             
-            content: content          
-        }
+            title: title,
+            content: content
+        };
 
         try {
+            console.log("쪽지 전송 요청:", messageDTO);
             await axios.post("http://localhost:8080/api/messages/send", messageDTO);
             alert("쪽지가 전송되었습니다!");
-            navigate('/mail');
+
+            setTimeout(() => {
+                navigate('/mail');
+            }, 500);
         } catch (error) {
             console.error("쪽지 전송 실패:", error);
             alert("전송 실패: " + error.message);
         }
     };
-
 
     return (
         <div className="mail-editor-wrapper">
@@ -69,10 +73,11 @@ const MailSend = () => {
                 ></textarea>
             </div>
 
-            <button onClick={handleSubmit} className="send-button">보내기</button>
+            <button type="button" onClick={handleSubmit} className="send-button">
+                보내기
+            </button>
         </div>
     );
 };
-
 
 export default MailSend;

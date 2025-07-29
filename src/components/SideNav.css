@@ -1,109 +1,100 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    height: 100%;
-    font-family: sans-serif;
-}
-
-.sidenav-layout {
-    display: flex;
-    height: 230px;
-    /* 프로필에 맞춰서 수정 권장 */
-}
-
 .sidenav-sidebar {
-    width: 225px;
-    background-color: #616161;
-    padding: 20px;
-    color: #e2e6ea;
-    text-decoration: none;
+  width: 220px;
+  background-color: #161616;
+  color: #fff;
+}
+
+.sidenav-text {
+  padding: 50px 0 50px 70px;
+}
+
+.sidenav-sidebar h4 {
+  margin-bottom: 20px;
+  color: #B2B5B9;
 }
 
 .sidenav-sidebar a {
-    color: white;
-    text-decoration: none;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 400;
 }
 
 .sidenav-sidebar a:hover {
-    color: #00F438;
+  color: #00F438;
 }
 
-.main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
+.sidenav-link {
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-weight: 400;
+  cursor: pointer;
 }
 
-/* 카드 스타일 */
-.card {
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    background-color: #000000;
+.sidenav-link.active {
+  font-weight: 700;
+  color: #ffffff;
+  border-left: 4px solid #00F438;
+  padding-left: 8px;
 }
 
-/* 프로필 이미지 컨테이너 */
-.sidenav-profile-image-container {
-    display: inline-block;
+/* 쪽지함 + 버튼 수평 배치 */
+.message-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.sidenav-profile-image {
-    margin: 15px 15px 15px 15px;
-    border: 1px solid #fff;
-    border-radius: 8px;
-    object-fit: cover;
-    width: 200px;
-    height: 200px;
+/* 쪽지 쓰기 버튼 */
+.message-write-btn {
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+  margin-top: -10px;
 }
 
-/* 카드 본문 스타일 */
-.sidenav-card-body {
-    border: 1px solid #fff;
-    width: 100%;
-    margin: 15px 15px 15px 0px;
-    border-radius: 8px;
-    color: #fff;
-    padding: 20px;
+/* 수신함 / 발신함 하위 탭 */
+.message-submenu {
+  padding-left: 14px;
+  margin-top: -5px;
 }
 
-/* 기본 버튼 스타일 (쪽지 등 다른 버튼에 쓸 경우 대비) */
-/* .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.submenu-link {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 6px;
+  cursor: pointer;
 }
 
-.btn:hover {
-    background-color: #0056b3;
-} */
-
-.edit-btn-s {
-    display: inline-block;   
-    padding: 5px 16px; 
-    margin: 80px 0px 0px 0px;
-    background-color: #646464;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    text-decoration: none;
+.submenu-link.active {
+  font-weight: bold;
+  color: #fff;
 }
 
-.edit-btn-s:hover {
-    background-color: #00F438;
-    color: #000000;
+/* 모달 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
 }
 
+.modal {
+  background: #fff;
+  color: #000;
+  padding: 20px;
+  width: 400px;
+  margin: 150px auto;
+  border-radius: 10px;
+}
