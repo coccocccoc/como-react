@@ -5,6 +5,8 @@ import SockJS from "sockjs-client";
 
 const useNotificationSocket = (userId, onMessageReceive) => {
     useEffect(() => {
+
+        if (!userId) return;
         const socket = new SockJS("http://localhost:8080/ws");
         const stompClient = new Client({
             webSocketFactory: () => socket,

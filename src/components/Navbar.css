@@ -98,6 +98,7 @@
   height: 22px;
   filter: brightness(100%);
   vertical-align: middle;
+  pointer-events: none;
 }
 
 .bell-button {

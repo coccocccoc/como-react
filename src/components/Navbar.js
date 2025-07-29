@@ -9,20 +9,31 @@ import axios from "axios";
 import NotificationPopup from "./NotificationPopup";
 
 function NavBar() {
+  const [userId, setUserId] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const navigate = useNavigate();
   const [nickname, setNickname] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  
 
   useEffect(() => {
+    const savedId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
     const savedNickname = localStorage.getItem("nickname");
 
-    if (token && savedNickname) {
-      setIsLoggedIn(true);
+    if (token && savedNickname && savedId) {
+      setUserId(parseInt(savedId)); // ✅ userId 저장
       setNickname(savedNickname);
+      setIsLoggedIn(true);
     }
   }, []);
+
+  useNotificationSocket(userId, (noti) => {
+    setNotifications((prev) => {
+      const updated = [...prev, noti];
+      return updated.slice(-5); // 최근 5개만 유지
+    });
+  });
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -32,9 +43,6 @@ function NavBar() {
     navigate("/");
   };
 
-  const handleReceiveNotification = (noti) => {
-    setNotifications((prev) => [...prev, noti]);
-  };
 
   const handleClick = (noti) => {
     if (noti.type === "message") {
@@ -49,8 +57,6 @@ function NavBar() {
     navigate(`/group-board/${noti.targetId}`); // 스터디 가입 신청
   }
 };
-
-  useNotificationSocket(1, handleReceiveNotification);
 
   return (
     <nav className="navbar">
@@ -86,18 +92,30 @@ function NavBar() {
             <li>
               <button
                 onClick={async () => {
+                  console.log("🔔 알림 버튼 눌림!"); // ✅ 클릭 시 바로 찍힘
+
                   try {
-                    const res = await axios.get("http://localhost:8080/api/notification?userId=1");
+                    const token = localStorage.getItem("token");
+                    console.log("📦 토큰:", token); // ✅ 토큰 값 확인
+
+                    const res = await axios.get(`http://localhost:8080/api/notification?userId=${userId}`, {
+                      headers: {
+                        Authorization: `Bearer ${token}`
+                      }
+                    });
+
+                    console.log("✅ 알림 응답:", res.data);
                     setNotifications(res.data);
                   } catch (err) {
-                    console.error("알림 가져오기 실패", err);
+                    console.error("❌ 알림 가져오기 실패:", err); // ✅ 실패 로그
                   }
                 }}
-                aria-label="알림"
                 className="bell-button"
+                type="button" // ✅ form 안이면 꼭 명시
               >
                 <img src={notificationIcon} alt="알림" className="notification-icon" />
               </button>
+
             </li>
 
             {/* 👤 닉네임 */}
@@ -133,3 +151,7 @@ function NavBar() {
 }
 
 export default NavBar;
+
+
+
+{/* <img src={notificationIcon} alt="알림" className="notification-icon" /> */}

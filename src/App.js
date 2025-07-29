@@ -9,7 +9,7 @@ import StudyDetail from './pages/StudyDetail';
 import StudyApply from './pages/StudyApply';
 import StudyEdit from './pages/StudyEdit';
 import MailHome from './pages/MailHome';
-import MailSend from './components/MailSend';
+
 import Mypage from './pages/Mypage';
 import ParticipatingPage from './pages/ParticipatingPage'; 
 import FinishedPage from './pages/FinishedPage'; 
@@ -50,7 +50,7 @@ function App() {
 
 
         <Route path="/mail" element={<MailHome />} />
-        <Route path="/mailsend" element={<MailSend />} />
+  
         <Route path="/modification" element={<ProfileModification />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/oauth/kakao/callback" element={<KakaoCallback />} />
