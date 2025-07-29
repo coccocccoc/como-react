@@ -4,6 +4,7 @@ import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Editor from '../components/Editor';
 import '../styles/StudyRecruit.css';
+import axios from 'axios';
 
 function StudyEdit() {
   const location = useLocation();
@@ -26,15 +27,25 @@ function StudyEdit() {
     );
   }
 
-  const handleSubmit = () => {
-    const updatedStudy = {
-      ...study,
-      title,
-      content,
-    };
+  const handleSubmit = async () => {
+    try {
+      const updatedStudy = {
+        ...study,
+        title,
+        content,
+      };
 
-    alert('스터디가 성공적으로 수정되었습니다!');
-    navigate('/studies', { state: updatedStudy });
+      const response = await axios.put(
+        `http://localhost:8080/api/studies/${study.recruitPostId}`,
+        updatedStudy
+      );
+
+      alert('스터디가 성공적으로 수정되었습니다!');
+      navigate('/studies/detail', { state: response.data }); // 상세 페이지로 이동
+    } catch (error) {
+      console.error('❌ 수정 실패:', error);
+      alert('스터디 수정에 실패했습니다.');
+    }
   };
 
   const handleCancel = () => {
@@ -53,7 +64,7 @@ function StudyEdit() {
             <label className="studyedit-recruit-label">모집 인원</label>
             <input
               className="studyedit-recruit-people-select"
-              value={study.people}
+              value={study.capacity}
               disabled
             />
           </div>
@@ -63,13 +74,13 @@ function StudyEdit() {
             <div className="studyedit-recruit-date-box">
               <input
                 className="studyedit-recruit-date-input"
-                value={study.period?.start || ''}
+                value={study.startDate || ''}
                 disabled
               />
               <span className="studyedit-recruit-date-tilde">~</span>
               <input
                 className="studyedit-recruit-date-input"
-                value={study.period?.end || ''}
+                value={study.endDate || ''}
                 disabled
               />
             </div>
@@ -82,7 +93,7 @@ function StudyEdit() {
             <label className="studyedit-recruit-label">진행 방식</label>
             <input
               className="studyedit-recruit-method-select"
-              value={study.method}
+              value={study.mode}
               disabled
             />
           </div>
@@ -91,7 +102,7 @@ function StudyEdit() {
             <label className="studyedit-recruit-label">모집 마감일</label>
             <input
               className="studyedit-recruit-date-input"
-              value={study.dueDate}
+              value={study.deadline}
               disabled
             />
           </div>

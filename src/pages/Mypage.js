@@ -6,6 +6,7 @@ import Main from '../components/Main';
 import Footer from '../components/Footer';
 
 const Mypage = () => {
+    
     return (
    <div>
             <NavBar />

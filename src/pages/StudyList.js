@@ -56,27 +56,22 @@ function StudyList() {
     setShowMethodFilter(false);
   };
 
+  // 가장 최근에 등록한 스터디가 맨 위에 노출
   const sortedStudies = [...studyList].sort((a, b) => {
-    const today = new Date();
-    const aDue = new Date(a.dueDate);
-    const bDue = new Date(b.dueDate);
-    const aIsClosed = aDue < today;
-    const bIsClosed = bDue < today;
-
-    if (aIsClosed && !bIsClosed) return 1;
-    if (!aIsClosed && bIsClosed) return -1;
-    return 0;
+    const dateA = new Date(a.regDate);
+    const dateB = new Date(b.regDate);
+    return dateB - dateA; // 최신 등록일이 앞으로 오게 (내림차순)
   });
 
   const filteredStudies = sortedStudies
     .filter(study =>
       selectedTags.length === 0 ||
       selectedTags.every(tag =>
-        (study.tags || []).map(t => t.toLowerCase()).includes(tag.toLowerCase())
+        (study.techStackNames || []).map(t => t.toLowerCase()).includes(tag.toLowerCase())
       )
     )
     .filter(study => study.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter(study => selectedMethod === '전체' || study.method === selectedMethod);
+    .filter(study => selectedMethod === '전체' || study.mode === selectedMethod);
 
   return (
     <div className="study-list-page">

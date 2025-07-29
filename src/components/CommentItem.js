@@ -12,7 +12,7 @@ const CommentItem = ({ comment, onDelete, onEdit }) => {
   
   return (
     <div className="comment-item">
-      <strong>{comment.nickname}</strong> | <span>{comment.regDate}</span>
+      <strong>{comment.nickname}</strong> | <span>{comment.regDate.slice(0, 16).replace('T', ' ')}</span>
       {editing ? (
         <>
           <input value={txt} onChange={(e) => setTxt(e.target.value)} />

@@ -19,7 +19,7 @@ function KakaoCallback() {
 
           localStorage.setItem("nickname", data.nickname);
 
-          localStorage.setItem("email", data.email);
+          localStorage.setItem("userId", data.userId);
 
           navigate("/");
         })

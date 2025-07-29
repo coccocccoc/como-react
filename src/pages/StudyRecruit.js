@@ -21,13 +21,19 @@ function StudyRecruit() {
   const [showTechFilter, setShowTechFilter] = useState(false);
   const [isAlwaysOpen, setIsAlwaysOpen] = useState(false);
 
-  const techTags = [
-    'Javascript', 'Typescript', 'React', 'Vue', 'Node.js', 'Spring', 'Java',
-    'Next.js', 'Nest.js', 'Express', 'Go', 'C', 'Python', 'Django', 'Swift',
-    'Jest', 'Kotlin', 'MySQL', 'MongoDB', 'PHP', 'GraphQL', 'Firebase',
-    'React Native', 'Unity', 'Flutter', 'AWS', 'Kubernetes', 'Docker', 'Git',
-    'Figma', 'Zeplin', 'Svelte'
-  ];
+  const techTagMap = {
+    "Javascript": 1, "Typescript": 2, "React": 3, "Vue": 4,
+    "Node.js": 5, "Spring": 6, "Java": 7, "Next.js": 8,
+    "Nest.js": 9, "Express": 10, "Go": 11, "C": 12,
+    "Python": 13, "Django": 14, "Swift": 15, "Jest": 16,
+    "Kotlin": 17, "MySQL": 18, "MongoDB": 19, "PHP": 20,
+    "GraphQL": 21, "Firebase": 22, "React Native": 23, "Unity": 24,
+    "Flutter": 25, "AWS": 26, "Kubernetes": 27, "Docker": 28,
+    "Git": 29, "Figma": 30, "Zeplin": 31, "Svelte": 32
+  };
+
+  // tag 목록 추출
+  const techTags = Object.keys(techTagMap);
 
   const handleTagClick = (tag) => {
     setSelectedTags(prev =>
@@ -42,26 +48,33 @@ function StudyRecruit() {
     }
 
     const studyData = {
+      userId: 1, // 임시데이터
+      // 로그인 연동 후에 주석 풀기
+      // userId: Number(localStorage.getItem("userId")), 
       title,
-      nickname: localStorage.getItem('nickname') || '익명',
-      dueDate: isAlwaysOpen ? '상시 모집' : dueDate,
-      method,
-      tags: selectedTags,
       content,
+      capacity: Number(selectedPeople === 'custom' ? customPeople : selectedPeople),
+      mode: method, // "온라인", "오프라인", "온오프라인" 중 하나
+      startDate,
+      endDate,
+      deadline: isAlwaysOpen ? null : dueDate,
+      // dueDate: isAlwaysOpen ? '상시 모집' : dueDate,
+      techStackIds: selectedTags.map(tag => techTagMap[tag]),
       date: new Date().toISOString().slice(0, 10),
-      people: Number(selectedPeople === 'custom' ? customPeople : selectedPeople),
-      periodStart: startDate,
-      periodEnd: endDate
     };
+
+      console.log("📦 보내는 데이터:", studyData);
 
     try {
       const response = await axios.post('http://localhost:8080/api/studies', studyData);
       console.log('등록 성공:', response.data);
       alert('스터디가 등록되었습니다!');
+      const createdGroupId = response.data.groupId; // ✅ 등록된 스터디 그룹 ID
       navigate('/studies');
     } catch (error) {
       console.error('등록 실패:', error);
       alert('등록에 실패했습니다.');
+      console.log("요청 데이터:", studyData);
     }
   };
 
@@ -107,7 +120,7 @@ function StudyRecruit() {
               <option value="">선택</option>
               <option value="온라인">온라인</option>
               <option value="오프라인">오프라인</option>
-              <option value="온/오프라인">온/오프라인</option>
+              <option value="온오프라인">온/오프라인</option>
             </select>
           </div>
 

@@ -1,12 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RegisterList.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const RegisterList = ({ posts }) => {
-    const [selectedPost, setSelectedPost] = useState(null);
+    const [myPosts, setMyPosts] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchMyPosts = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    console.warn("❌ token이 없습니다.");
+                    return;
+                }
+
+                const response = await axios.get("/api/user/my-posts", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                setMyPosts(response.data);
+            } catch (err) {
+                console.error("내 게시물 불러오기 실패", err);
+            }
+        };
+        fetchMyPosts();
+    }, []);
 
     const handleClick = (post) => {
-        setSelectedPost(post);
+        if (post.type === "group") {
+            // ✅ state에 postId 전달
+            navigate(`/group-board/${post.groupId}`, {
+                state: { postId: post.postId }
+            });
+        } else if (post.type === "recruit") {
+            navigate("/studies/detail", { state: post });
+        }
     };
+
 
     return (
     
@@ -15,10 +49,9 @@ const RegisterList = ({ posts }) => {
             <h2 className="registerlist-section-title">내가 쓴 글</h2>
 
                 {/* 게시물 목록 */}
-                {!selectedPost && (
                     <ul className="registerlist-post-list">
-                        {[...posts]
-                            .sort((a, b) => new Date(b.date) - new Date(a.date)) // 최신순 정렬
+                        {[...myPosts]
+                            .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)) // 최신순 정렬
                             .map((post, index) => (
                                 <li
                                     key={`${post.id}-${index}`}
@@ -27,15 +60,14 @@ const RegisterList = ({ posts }) => {
                                 >
                                     <div className="registerlist-post-title">{post.title}</div>
                                     <div className="registerlist-post-meta">
-                                        <span>{post.writer}</span> | <span>{post.date}</span>
+                                        <span>{post.nickname}</span> | <span>{post.createdDate}</span>
                                     </div>
                                 </li>
                             ))}
                     </ul>
-                )}
 
                 {/* 게시물 상세 */}
-                {selectedPost && (
+                {/* {selectedPost && (
                     <div className="registerlist-post-detail">
                         <h5>{selectedPost.title}</h5>
                         <div className="registerlist-etc">
@@ -45,7 +77,7 @@ const RegisterList = ({ posts }) => {
                         <p className="registerlist-content">{selectedPost.content}</p>
                         <button className="registerlist-back-button" onClick={() => setSelectedPost(null)}>목록으로</button>
                     </div>
-                )}
+                )} */}
             </div>
 
     );

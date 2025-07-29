@@ -63,6 +63,22 @@
   color: #00ff88;
 }
 
+/* 팀원 모집하기 */
+.nav-button {
+  background: none;
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-button:hover {
+  color: #00ff88;
+}
+
 .bell-button {
   font-size: 20px;
   background: none;

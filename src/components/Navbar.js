@@ -49,8 +49,10 @@ function NavBar() {
       navigate(`/board?id=${noti.targetId}#comments`);
     } else if (noti.type === "notice") {
       navigate(`/notice?id=${noti.targetId}`);
-    }
-  };
+    } else if (noti.type === "application") {
+    navigate(`/group-board/${noti.targetId}`); // 스터디 가입 신청
+  }
+};
 
   // ✅ WebSocket으로 알림 수신
   useNotificationSocket(1, handleReceiveNotification);
@@ -65,7 +67,23 @@ function NavBar() {
 
       <ul className="navbar-menu">
         <li><Link to="/studies">스터디 찾아보기</Link></li>
-        <li><Link to="/studies/recruit">팀원 모집하기</Link></li>
+        <li>
+          {/* 로그인 안되어있는 상태로 팀원 모집하기 버튼 클릭시 로그인창으로 이동 */}
+          <button
+            className="nav-button"
+            onClick={() => {
+              const token = localStorage.getItem("token");
+              if (!token) {
+                alert("로그인이 필요합니다.");
+                navigate("/login");
+              } else {
+                navigate("/studies/recruit");
+              }
+            }}
+          >
+            팀원 모집하기
+          </button>
+        </li>
         
         {isLoggedIn ? (
           <>
