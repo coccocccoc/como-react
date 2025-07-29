@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import WishGray from '../img/wish1.svg';
 import WishGreen from '../img/wish2.svg';
 
-function StudyCard({ study, to = '/studies/detail' }) {
+function StudyCard({ study, to = '/studies/detail', onClick  }) {
   const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
 
@@ -60,6 +60,11 @@ function StudyCard({ study, to = '/studies/detail' }) {
   };
 
   const handleCardClick = () => {
+    if (onClick) {
+      onClick(); // 상위 컴포넌트에서 넘긴 클릭 핸들러 사용
+      return;
+    }
+
     if (to === '/group-board' && study.groupId) {
       navigate(`/group-board/${study.groupId}`);
       return;

@@ -117,7 +117,7 @@ function Main() {
           <StudySection title="내가 활동하는 스터디" data={myStudies} to="/group-board" />
         )}
         {/* 데이터 고정 */}
-        <StudySection title="인기 스터디" data={popularStudies} /> 
+        <StudySection title="인기 스터디" data={popularStudies} to="/studies/detail" /> 
         <StudySection title="최신 스터디" data={localStudies} to="/studies/detail" />
       </main>
 

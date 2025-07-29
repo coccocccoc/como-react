@@ -8,6 +8,7 @@ import axios from 'axios';
 function StudyDetail() {
   const location = useLocation();
   const navigate = useNavigate();
+  const postId = location.state?.postId;
   
 
   const study = location.state || {
@@ -42,10 +43,33 @@ function StudyDetail() {
   
 
   useEffect(() => {
+    if (!postId) {
+      alert("잘못된 접근입니다.");
+      navigate('/studies');
+      return;
+    }
+
+    // ✅ postId 기준으로 상세 정보 요청
+    axios.get(`http://localhost:8080/api/studies/${postId}`)
+      .then((res) => {
+        setStudyData(res.data);
+      })
+      .catch((err) => {
+        console.error("❌ 스터디 상세 조회 실패:", err);
+        alert("스터디 정보를 불러오지 못했습니다.");
+        navigate('/studies');
+      });
+
+    // ✅ 로그인 사용자 정보 가져오기
     const storedUserId = localStorage.getItem("userId");
-    console.log("✅ 로컬 userId:", storedUserId);
-    console.log("✅ studyData.userId:", study.userId);  // 초기값
-    console.log("✅ studyData 전체:", study);
+    if (storedUserId) {
+      setCurrentUserId(Number(storedUserId));
+    }
+  }, [postId, navigate]);
+
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setCurrentUserId(Number(storedUserId)); // 문자열 → 숫자 변환
     }
@@ -53,22 +77,25 @@ function StudyDetail() {
   const isOwner = studyData.userId === currentUserId;
 
   useEffect(() => {
-  const storedUserId = localStorage.getItem("userId");
-  if (storedUserId) {
-    setCurrentUserId(Number(storedUserId));
-  }
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setCurrentUserId(Number(storedUserId));
+    }
 
-  // 승인된 멤버 수 조회
-  axios.get(`http://localhost:8080/api/studies/members/count`, {
-    params: { groupId: study.groupId }
-  })
-    .then((res) => {
-      setApprovedMemberCount(res.data);
-    })
-    .catch((err) => {
-      console.error("✅ 멤버 수 조회 실패:", err);
-    });
-}, []);
+    // ✅ studyData.groupId가 존재하고 유효할 때만 요청
+    if (studyData && studyData.groupId) {
+      axios.get(`http://localhost:8080/api/studies/members/count`, {
+        params: { groupId: studyData.groupId }
+      })
+        .then((res) => {
+          setApprovedMemberCount(res.data);
+        })
+        .catch((err) => {
+          console.error("❌ 멤버 수 조회 실패:", err);
+        });
+    }
+  }, [studyData.groupId]);
+
 
 
   const handleApplyClick = async () => {
@@ -152,7 +179,7 @@ function StudyDetail() {
         <h1 className="study-detail-title">{studyData.title}</h1>
         <div className="study-detail-meta">
           <span className="study-detail-nickname">👤 {studyData.nickname}</span>
-          <span className="study-detail-date">{studyData.regDate.slice(0, 16).replace('T', ' ')}</span>
+          <span className="study-detail-date">{(studyData.regDate || studyData.createdDate || '').slice(0, 16).replace('T', ' ')}</span>
         </div>
 
         <div className="study-detail-info-box">

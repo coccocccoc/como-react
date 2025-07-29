@@ -5,7 +5,7 @@ import "./GroupBoardSection.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const GroupBoardSection = ({ posts, comments, onWrite }) => {
+const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   const [postData, setPostData] = useState({});
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -23,38 +23,19 @@ const GroupBoardSection = ({ posts, comments, onWrite }) => {
   const visibleCategories = ["공지사항", "자유방", "인증방", "질문방"];
 
 
+  useEffect(() => {
+    if (initialPostId && postData) {
+      for (const category in postData) {
+        const post = postData[category].find(p => String(p.id) === String(initialPostId));
+        if (post) {
+          setSelectedCategory(category);
+          setSelectedPost(post);
+          break;
+        }
+      }
+    }
+  }, [postData, initialPostId]);
 
-
-
-  // // 임시데이터
-  // // 백 연동시 삭제
-  // useEffect(() => {
-  //   if (mode === "approve") {
-  //     setPendingMembers([
-  //       { id: 101, name: "말하는 감자", date: "2025-07-20" },
-  //       { id: 102, name: "백엔드왕", date: "2025-07-21" },
-  //       { id: 103, name: "포항 AI팀", date: "2025-07-22" },
-  //     ]);
-  //   }
-  // }, [mode]);
-
-  // useEffect(() => {
-  //   if (selectedMember) {
-  //     const dummyApplications = {
-  //       101: { title: "가입 인사", content: "안녕하세요! 열심히 활동하겠습니다." },
-  //       102: { title: "참여 요청", content: "책 모임에 꼭 참여하고 싶어요!" },
-  //       103: { title: "가입 부탁드립니다", content: "함께 책 이야기 나누고 싶습니다!" },
-  //     };
-
-  //     // 해당 회원의 신청 데이터가 없을 경우 기본값
-  //     setApplicationContent(
-  //       dummyApplications[selectedMember.id] || {
-  //         title: "제목 없음",
-  //         content: "신청 글이 없습니다."
-  //       }
-  //     );
-  //   }
-  // }, [selectedMember]);
 
   // 신청자 목록 불러오기
   useEffect(() => {

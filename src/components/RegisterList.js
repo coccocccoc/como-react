@@ -31,8 +31,16 @@ const RegisterList = ({ posts }) => {
     }, []);
 
     const handleClick = (post) => {
-        navigate(`/group-board/${post.groupId}/post/${post.id}`);
+        if (post.type === "group") {
+            // ✅ state에 postId 전달
+            navigate(`/group-board/${post.groupId}`, {
+                state: { postId: post.postId }
+            });
+        } else if (post.type === "recruit") {
+            navigate("/studies/detail", { state: post });
+        }
     };
+
 
     return (
     
@@ -43,7 +51,7 @@ const RegisterList = ({ posts }) => {
                 {/* 게시물 목록 */}
                     <ul className="registerlist-post-list">
                         {[...myPosts]
-                            .sort((a, b) => new Date(b.date) - new Date(a.date)) // 최신순 정렬
+                            .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)) // 최신순 정렬
                             .map((post, index) => (
                                 <li
                                     key={`${post.id}-${index}`}

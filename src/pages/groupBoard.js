@@ -3,7 +3,7 @@ import "../styles/App.css"
 import StudyInfo from "../components/StudyInfo";
 import GroupBoardSection from "../components/GroupBoardSection";
 import NavBar from "../components/Navbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import axios from "axios";
 
@@ -13,6 +13,8 @@ const GroupBoard = () => {
   const [comments, setComments] = useState({}); // 댓글 상태 추가
   const [studyData, setStudyData] = useState(null);
   const { groupId } = useParams();
+  const location = useLocation();
+  const postIdFromState = location.state?.postId || null;
 
 
 
@@ -117,7 +119,12 @@ const GroupBoard = () => {
 
 
       {/* ✅ 그룹 게시판 컴포넌트 */}
-      <GroupBoardSection posts={posts} comments={comments} onWrite={() => navigate(`/group-board/${groupId}/register`)} />
+      <GroupBoardSection
+        posts={posts}
+        comments={comments}
+        onWrite={() => navigate(`/group-board/${groupId}/register`)}
+        initialPostId={postIdFromState}
+      />
       
       <Footer />
     </div>
