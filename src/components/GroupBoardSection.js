@@ -17,6 +17,8 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [applicationContent, setApplicationContent] = useState({ title: "", content: "" });
   const { groupId } = useParams();
+  const token = localStorage.getItem("token");
+
 
   //  시스템 카테고리 분리
   const systemCategories = ["회원 승인"];
@@ -209,13 +211,21 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
     try {
       const postId = p.groupPostId || p.id;
 
-      await axios.put(`http://localhost:8080/group-board/post/${postId}`, {
-        groupPostId: postId, 
-        title: p.title,
-        content: p.content,
-        category: p.category,
-        userId: 1, // 임시데이터
-      });
+      await axios.put(
+        `http://localhost:8080/group-board/post/${postId}`,
+        {
+          groupPostId: postId, 
+          title: p.title,
+          content: p.content,
+          category: p.category,
+          userId: Number(localStorage.getItem("userId"))
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       setPostData(prev => {
         const updatedList = (prev[p.category] || []).map(item =>
@@ -239,9 +249,16 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
       try {
         const postId = selectedPost.groupPostId || selectedPost.id;
 
-        await axios.delete(`http://localhost:8080/group-board/post/${postId}`, {
-          params: { requesterId: 1 } // 임시 사용자 ID
-        });
+        await axios.delete(
+          `http://localhost:8080/group-board/post/${postId}`,
+          {
+            params: { requesterId: 1 }, // 이건 추후 백엔드에서 제거 권장
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
 
         // 해당 게시물 제거
         setPostData(prev => {
@@ -263,15 +280,20 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
 
   // 댓글 crud
   const addCmt = (pid, c) => {
-    // 서버에 댓글 추가 요청
+    const token = localStorage.getItem("token");
+    const userId = Number(localStorage.getItem("userId"));
+
     axios
       .post("http://localhost:8080/group-board/comments/add", {
-        userId: 1, // 예시: 사용자 ID
         groupPostId: pid,
         content: c.content,
+        userId: userId
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       })
       .then(response => {
-        // 서버에서 반환된 새 댓글을 상태에 추가
         setCommentState(prev => ({
           ...prev,
           [pid]: [...(prev[pid] || []), response.data],
@@ -283,8 +305,14 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   };
 
   const delCmt = (pid, cid) => {
+    const token = localStorage.getItem("token");
+
     axios
-      .delete(`http://localhost:8080/group-board/comments/delete/${cid}`)
+      .delete(`http://localhost:8080/group-board/comments/delete/${cid}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then(() => {
         setCommentState(prev => ({
           ...prev,
@@ -297,11 +325,17 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   };
 
 
+
   const updCmt = (pid, upd) => {
-    // 서버에 댓글 수정 요청
+    const token = localStorage.getItem("token");
+
     axios
       .put(`http://localhost:8080/group-board/comments/update/${upd.commentId}`, {
         content: upd.content,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       })
       .then(response => {
         const updated = response.data;
@@ -316,6 +350,7 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
         console.error("댓글 수정 실패", error);
       });
   };
+
 
   const renderPosts = () => (
     <ul className="post-list">

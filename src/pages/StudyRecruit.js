@@ -46,11 +46,13 @@ function StudyRecruit() {
       alert('모든 항목을 입력해주세요.');
       return;
     }
+    
+    const token = localStorage.getItem('token');
 
     const studyData = {
-      userId: 1, // 임시데이터
+      // userId: 1, // 임시데이터
       // 로그인 연동 후에 주석 풀기
-      // userId: Number(localStorage.getItem("userId")), 
+      userId: Number(localStorage.getItem("userId")), 
       title,
       content,
       capacity: Number(selectedPeople === 'custom' ? customPeople : selectedPeople),
@@ -66,15 +68,17 @@ function StudyRecruit() {
       console.log("📦 보내는 데이터:", studyData);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/studies', studyData);
+      const response = await axios.post('http://localhost:8080/api/studies', studyData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       console.log('등록 성공:', response.data);
       alert('스터디가 등록되었습니다!');
-      const createdGroupId = response.data.groupId; // ✅ 등록된 스터디 그룹 ID
       navigate('/studies');
     } catch (error) {
       console.error('등록 실패:', error);
       alert('등록에 실패했습니다.');
-      console.log("요청 데이터:", studyData);
     }
   };
 

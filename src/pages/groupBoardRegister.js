@@ -33,6 +33,7 @@ const GroupBoardRegister = () => {
     }
 
     const token = localStorage.getItem("token");
+    const userId = Number(localStorage.getItem("userId"));
 
     try {
       await axios.post(
@@ -40,6 +41,7 @@ const GroupBoardRegister = () => {
         {
           ...data,
           groupId: groupId,
+          userId: userId
         },
         {
           headers: {

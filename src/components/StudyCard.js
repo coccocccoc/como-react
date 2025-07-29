@@ -9,6 +9,7 @@ function StudyCard({ study, to = '/studies/detail', onClick  }) {
   const navigate = useNavigate();
 
   const truncate = (text, maxLen) => {
+    if (!text) return ""; // text가 null, undefined, 빈 문자열일 때 대비
     return text.length > maxLen ? text.slice(0, maxLen) + "..." : text;
   };
 

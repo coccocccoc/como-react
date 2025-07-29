@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Mypage.css';
+import axios from 'axios';
 // import PostCard from '../components/PostCard';
-// import { myPosts } from '../data/mockPosts';
 
 function WrittenPage() {
-  const loggedInUser = localStorage.getItem('nickname') || 'iseul';
+  const [writtenPosts, setWrittenPosts] = useState([]);
 
-  // 로그인한 사용자가 작성한 글만 필터링
-//   const writtenPosts = myPosts.filter((post) => post.nickname === loggedInUser);
+  useEffect(() => {
+    const fetchMyPosts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/user/my-posts', {
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setWrittenPosts(response.data);
+        console.log("내가 작성한 글:", response.data);
+      } catch (error) {
+        console.error('작성한 글 불러오기 실패:', error);
+      }
+    };
+
+    fetchMyPosts();
+  }, []);
 
   return (
     <div className="mypage-posts-container">
