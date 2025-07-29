@@ -14,12 +14,11 @@ const MailSendModal = ({ onClose, senderId }) => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:8080/api/users/nickname/${recipientNickname}`);
-      const receiverId = response.data.id;
+      const senderNickname = localStorage.getItem("userNickname");
 
       await axios.post("http://localhost:8080/api/messages/send", {
-        senderId,
-        receiverId,
+        senderNickname,
+        receiverNickname: recipientNickname,
         title,
         content,
       });
