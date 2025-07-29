@@ -49,8 +49,10 @@ function NavBar() {
       navigate(`/board?id=${noti.targetId}#comments`);
     } else if (noti.type === "notice") {
       navigate(`/notice?id=${noti.targetId}`);
-    }
-  };
+    } else if (noti.type === "application") {
+    navigate(`/group-board/${noti.targetId}`); // 스터디 가입 신청
+  }
+};
 
   // ✅ WebSocket으로 알림 수신
   useNotificationSocket(1, handleReceiveNotification);
