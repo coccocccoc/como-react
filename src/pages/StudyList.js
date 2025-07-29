@@ -5,6 +5,7 @@ import '../styles/StudyList.css';
 import SearchIcon from '../img/Group 1418.svg';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import StudyBannerImg from '../img/main.jpg';
 
 function StudyList() {
   const [showTechFilter, setShowTechFilter] = useState(false);
@@ -81,8 +82,16 @@ function StudyList() {
   return (
     <div className="study-list-page">
       <Navbar />
+
       <div className="study-list-wrapper">
-        <div className="study-banner" />
+        {/* 이미지 배너 */}
+        <div className="study-banner">
+          <img
+            src={StudyBannerImg}
+            alt="스터디 리스트 배너"
+            className="study-banner-img"
+          />
+        </div>
 
         {/* 필터 + 검색창 */}
         <div className="study-top-bar">
@@ -147,6 +156,7 @@ function StudyList() {
             <StudyCard key={index} study={study} />
           ))}
         </div>
+
         <Footer />
       </div>
     </div>

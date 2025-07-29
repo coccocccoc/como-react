@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "../styles/App.css";
 import StudySection from "../components/StudySection";
-import {cardData} from "../data/mockData2";
+import { cardData } from "../data/mockData2";
 import "../styles/main.css";
 import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
-
-const bannerStyle = {
-  width: "100%",
-  height: "430px",
-  backgroundColor: "#ddd",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center"
-};
+import mainBannerImg from "../img/main.jpg";
 
 function Main() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.log(isLoggedIn+'~~~~~~'
-  )
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-    console.log(token+'!!!!')
+    console.log(token + "!!!!");
   }, []);
-
 
   return (
     <div className="app">
@@ -34,7 +22,9 @@ function Main() {
       <NavBar />
 
       {/* Banner */}
-      <div style={bannerStyle}></div>
+      <div className="main-banner">
+        <img src={mainBannerImg} alt="메인 배너" className="main-banner-img" />
+      </div>
 
       {/* Main */}
       <main className="main">
