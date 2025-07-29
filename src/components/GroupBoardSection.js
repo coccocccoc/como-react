@@ -17,13 +17,32 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [applicationContent, setApplicationContent] = useState({ title: "", content: "" });
   const { groupId } = useParams();
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");const [isLeader, setIsLeader] = useState(false);
+
+
 
 
   //  시스템 카테고리 분리
-  const systemCategories = ["회원 승인"];
+  const systemCategories = isLeader ? ["회원 승인"] : [];
   const visibleCategories = ["공지사항", "자유방", "인증방", "질문방"];
 
+
+  // 스터디장 여부 확인
+  useEffect(() => {
+    const fetchLeaderInfo = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/api/study-groups/${groupId}`);
+        const creatorId = res.data.creatorId;
+        const myUserId = Number(localStorage.getItem("userId"));
+
+        setIsLeader(myUserId === creatorId); // 스터디장인지 여부 저장
+      } catch (err) {
+        console.error("스터디장 정보 불러오기 실패", err);
+      }
+    };
+
+    fetchLeaderInfo();
+  }, [groupId]);
 
   useEffect(() => {
     if (initialPostId && postData) {
@@ -98,8 +117,18 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
       ? `http://localhost:8080/api/study-group-members/approve/${memberId}`
       : `http://localhost:8080/api/study-group-members/reject/${memberId}`;
 
-    axios.post(url)
+    axios
+      .post(
+        url,
+        {}, // POST body (빈 객체)
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // JWT 인증 헤더 추가
+          },
+        }
+      )
       .then(() => {
+        // 승인/거절 완료 후 목록에서 제거
         setPendingMembers((prev) => prev.filter((m) => m.id !== memberId));
         setSelectedMember(null);
         setApplicationContent({ title: "", content: "" });
@@ -109,6 +138,7 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
         alert("처리 중 오류가 발생했습니다.");
       });
   };
+
 
 
 
