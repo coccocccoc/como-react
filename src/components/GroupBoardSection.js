@@ -139,20 +139,22 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
 
   // 승인 거절 처리
   const handleMemberApproval = (memberId, isAccepted) => {
-    const url = isAccepted
-      ? `http://localhost:8080/api/study-group-members/approve/${memberId}`
-      : `http://localhost:8080/api/study-group-members/reject/${memberId}`;
+    const numericGroupId = Number(groupId);
 
+    const url = isAccepted
+      ? `http://localhost:8080/api/study-group-members/approve`
+      : `http://localhost:8080/api/study-group-members/reject`;
+    
     const rawToken = localStorage.getItem("token");
     const bearerToken = rawToken?.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}`;
 
     axios
       .post(
-        url,
-        {}, // 빈 바디
+        `${url}?userId=${memberId}&groupId=${numericGroupId}`,
+        {},
         {
           headers: {
-            Authorization: bearerToken, // ✅ 올바른 인증 헤더
+            Authorization: bearerToken,
           },
         }
       )
