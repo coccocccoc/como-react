@@ -55,13 +55,24 @@ function StudyApply() {
       return;
     }
 
-  try {
-      await axios.post(`http://localhost:8080/api/studies/apply`, {
-        groupId: groupId,
-        userId: 1, // ✅ 추후 로그인 사용자 정보로 교체
-        applyTitle: title,
-        applyContent: content,
-      });
+    const rawToken = localStorage.getItem('token');
+    const token = rawToken?.startsWith('Bearer ') ? rawToken : `Bearer ${rawToken}`;
+
+    try {
+      await axios.post(
+        `http://localhost:8080/api/studies/apply`,
+        {
+          groupId: groupId,
+          applyTitle: title,
+          applyContent: content,
+          // ✅ userId는 보내지 않음 (서버가 토큰에서 추출)
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       alert('스터디 신청이 완료되었습니다!');
       navigate('/studies');
@@ -70,6 +81,7 @@ function StudyApply() {
       alert('스터디 신청 중 오류가 발생했습니다.');
     }
   };
+
 
   return (
     <div className="study-apply-page">

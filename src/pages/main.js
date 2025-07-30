@@ -23,7 +23,7 @@ function Main() {
       startDate: "2025-08-01",
       endDate: "2025-08-31",
       mode: "온라인",
-      deadline: "2025-07-30",
+      deadline: "2025-07-31",
       techStackNames: ["Java", "Spring"],
       content: "<p>매일 알고리즘 문제 풉니다!</p>"
     },

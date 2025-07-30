@@ -31,7 +31,15 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   useEffect(() => {
     const fetchLeaderInfo = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/study-groups/${groupId}`);
+        const token = localStorage.getItem("token");
+        const bearerToken = token?.startsWith("Bearer ") ? token : `Bearer ${token}`;
+        const res = await axios.get(
+          `http://localhost:8080/api/study-groups/${groupId}`,
+          {
+            headers: {
+              Authorization: bearerToken,
+            },
+          });
         const creatorId = res.data.creatorId;
         const myUserId = Number(localStorage.getItem("userId"));
 
@@ -61,15 +69,20 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   // 신청자 목록 불러오기
   useEffect(() => {
     if (mode === "approve") {
-      axios
-        .get(`http://localhost:8080/api/study-group-members/pending?groupId=${groupId}`)
-        .then((res) => {
+      const rawToken = localStorage.getItem("token");
+      const bearerToken = rawToken?.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}`;
 
-          // 👉 가공해서 필요한 필드 만들어줌
+      axios
+        .get(`http://localhost:8080/api/study-group-members/pending?groupId=${groupId}`, {
+          headers: {
+            Authorization: bearerToken,
+          }
+        })
+        .then((res) => {
           const converted = res.data.map((m) => ({
             id: m.userId,
             name: m.nickname, 
-            date: new Date().toISOString().slice(0, 10), // 수정..
+            date: new Date().toISOString().slice(0, 10),
             userId: m.userId,
             groupId: m.groupId,
             applyTitle: m.applyTitle,
@@ -92,12 +105,24 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
         userId: selectedMember.userId
       });
 
+      const rawToken = localStorage.getItem("token");
+      const bearerToken = rawToken?.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}`;
+
       axios
-        .get(`http://localhost:8080/api/study-group-members/application?groupId=${groupId}&userId=${selectedMember.userId}`)
+        .get(
+          `http://localhost:8080/api/study-group-members/application?groupId=${groupId}&userId=${selectedMember.userId}`,
+          {
+            headers: {
+              Authorization: bearerToken,
+            },
+          }
+        )
         .then((res) => {
+          const data = res.data[0] || {};
+          console.log("📨 신청글 응답 데이터", data);
           setApplicationContent({
-            title: res.data.applyTitle || "제목 없음",
-            content: res.data.applyContent || "신청 내용 없음",
+            title: data.applyTitle || "제목 없음",
+            content: data.applyContent || "신청 내용 없음",
           });
         })
         .catch((err) => {
@@ -111,24 +136,27 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
   }, [selectedMember, groupId]);
 
 
+
   // 승인 거절 처리
   const handleMemberApproval = (memberId, isAccepted) => {
     const url = isAccepted
       ? `http://localhost:8080/api/study-group-members/approve/${memberId}`
       : `http://localhost:8080/api/study-group-members/reject/${memberId}`;
 
+    const rawToken = localStorage.getItem("token");
+    const bearerToken = rawToken?.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}`;
+
     axios
       .post(
         url,
-        {}, // POST body (빈 객체)
+        {}, // 빈 바디
         {
           headers: {
-            Authorization: `Bearer ${token}`, // JWT 인증 헤더 추가
+            Authorization: bearerToken, // ✅ 올바른 인증 헤더
           },
         }
       )
       .then(() => {
-        // 승인/거절 완료 후 목록에서 제거
         setPendingMembers((prev) => prev.filter((m) => m.id !== memberId));
         setSelectedMember(null);
         setApplicationContent({ title: "", content: "" });
@@ -138,6 +166,7 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
         alert("처리 중 오류가 발생했습니다.");
       });
   };
+
 
 
 
@@ -460,8 +489,15 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
                   <h4>{selectedMember.name}님의 가입 신청</h4>
 
                   <div className="application-details">
-                    <p className="application-title">{applicationContent.applyTitle}</p>
-                    <p className="application-body">{applicationContent.applyContent}</p>
+                    <p className="application-title">{applicationContent.title}</p>
+                    {applicationContent.content ? (
+                      <div
+                        className="application-body"
+                        dangerouslySetInnerHTML={{ __html: applicationContent.content }}
+                      />
+                    ) : (
+                      <p className="application-body">신청 내용을 불러올 수 없습니다.</p>
+                    )}
                   </div>
 
                   <div className="approval-buttons">

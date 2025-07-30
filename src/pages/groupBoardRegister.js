@@ -15,7 +15,14 @@ const GroupBoardRegister = () => {
    // 스터디 정보 불러오기
   useEffect(() => {
     if (groupId) {
-      axios.get(`http://localhost:8080/api/studies/group/${groupId}`)
+      const token = localStorage.getItem("token");
+      const bearerToken = token?.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+      axios.get(`http://localhost:8080/api/studies/group/${groupId}`, {
+        headers: {
+          Authorization: bearerToken,
+        }
+      })
         .then((res) => {
           setStudyData(res.data);
         })
@@ -25,6 +32,7 @@ const GroupBoardRegister = () => {
         });
     }
   }, [groupId]);
+
 
   const handleSubmit = async (data) => {
     if (!groupId) {
