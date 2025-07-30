@@ -309,11 +309,12 @@ const GroupBoardSection = ({ posts, comments, onWrite, initialPostId }) => {
     if (window.confirm("🗑️ 게시물을 삭제하시겠습니까?")) {
       try {
         const postId = selectedPost.groupPostId || selectedPost.id;
+        const requesterId = Number(localStorage.getItem("userId")); // ✅ 현재 로그인한 유저 ID
 
         await axios.delete(
           `http://localhost:8080/group-board/post/${postId}`,
           {
-            params: { requesterId: 1 }, // 이건 추후 백엔드에서 제거 권장
+            params: { requesterId },
             headers: {
               Authorization: `Bearer ${token}`
             }
