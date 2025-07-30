@@ -90,7 +90,7 @@ function StudyRecruit() {
     <div className="recruit-background">
       <NavBar />
       <div className="recruit-wrapper">
-        <h2 className="recruit-section-title">프로젝트의 기본 정보를 입력해주세요.</h2>
+        <h2 className="recruit-section-title">스터디의 기본 정보를 입력해주세요.</h2>
         <div className="recruit-row">
           <div className="recruit-column">
             <label className="recruit-label">모집 인원</label>
@@ -193,7 +193,7 @@ function StudyRecruit() {
 
         <hr className="recruit-divider" />
 
-        <h2 className="recruit-section-title">프로젝트에 대해 설명해주세요.</h2>
+        <h2 className="recruit-section-title">스터디에 대해 설명해주세요.</h2>
         <div className="recruit-editor-box">
           <Editor
             title={title}
@@ -204,7 +204,7 @@ function StudyRecruit() {
 
         <div className="studyedit-recruit-btns2">
           <button className="studyedit-recruit-cancel-btn2" onClick={handleCancel}>취소하기</button>
-          <button className="studyedit-recruit-submit-btn2" onClick={handleSubmit}>신청하기</button>
+          <button className="studyedit-recruit-submit-btn2" onClick={handleSubmit}>등록하기</button>
         </div>
       </div>
       <Footer />
