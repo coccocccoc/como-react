@@ -45,6 +45,7 @@ const ModifiedPage = () => {
         "userProfile",
         JSON.stringify({ name: nickname, email })
       );
+      localStorage.setItem("nickname", nickname);
       if (image) {
         localStorage.setItem("userImage", image);
       }

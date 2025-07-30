@@ -14,14 +14,25 @@ const MailSendModal = ({ onClose, senderId }) => {
     }
 
     try {
-      const senderNickname = localStorage.getItem("userNickname");
+      const senderNickname = localStorage.getItem("nickname");
+      const token = localStorage.getItem("token");
 
-      await axios.post("http://localhost:8080/api/messages/send", {
-        senderNickname,
-        receiverNickname: recipientNickname,
-        title,
-        content,
-      });
+      await axios.post(
+        "http://localhost:8080/api/messages/send",
+        {
+          senderNickname,
+          receiverNickname: recipientNickname,
+          title,
+          content,
+        },
+        {
+          headers: {
+            Authorization: token?.startsWith("Bearer ")
+              ? token
+              : `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("쪽지가 전송되었습니다!");
       onClose();
@@ -30,6 +41,7 @@ const MailSendModal = ({ onClose, senderId }) => {
       alert("전송 실패: " + (err.response?.data?.message || err.message));
     }
   };
+
 
   return (
     <div className="modal-overlay">

@@ -26,6 +26,19 @@ function NavBar() {
       setNickname(savedNickname);
       setIsLoggedIn(true);
     }
+
+    const handleStorageChange = (e) => {
+        if (e.key === "nickname") {
+          console.log("🔄 닉네임 변경 감지:", e.newValue);
+          setNickname(e.newValue);
+        }
+      };
+
+      window.addEventListener("storage", handleStorageChange);
+
+      return () => {
+        window.removeEventListener("storage", handleStorageChange);
+      };
   }, []);
 
   useNotificationSocket(userId, (noti) => {
